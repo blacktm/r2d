@@ -8,4 +8,6 @@ Gem::Specification.new do |s|
   s.email       = '@blacktm'
   s.homepage    = 'http://www.blacktm.com'
   s.files       = Dir.glob('lib/**/*')
+
+  s.add_dependency 'gosu', '~> 0.7.47.1'
 end
