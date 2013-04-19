@@ -1,6 +1,6 @@
 # text.rb
 
-module R2d
+module R2D
   class Text
     attr_accessor :x1, :y1, :text
     attr_reader :color

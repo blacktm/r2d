@@ -1,6 +1,6 @@
 # rectangle.rb
 
-module R2d
+module R2D
   class Rectangle
 
     # x1,y1 == top left

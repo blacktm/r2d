@@ -1,6 +1,6 @@
 # image.rb
 
-module R2d
+module R2D
   class Image
     attr_accessor :x, :y
 

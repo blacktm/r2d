@@ -1,7 +1,7 @@
 # quad.rb
 # A class representing a quadrilateral
 
-module R2d
+module R2D
   class Quad
 
     # x1,y1 == top left
