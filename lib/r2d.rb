@@ -15,3 +15,6 @@ require 'r2d/song'
 require 'r2d/sound'
 require 'r2d/exceptions'
 require 'r2d/helpers'
+
+module R2d
+end
