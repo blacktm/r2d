@@ -1,6 +1,6 @@
 # line.rb
 
-module R2d
+module R2D
   class Line
     attr_accessor :x1, :y1, :c1,
                   :x2, :y2, :c2

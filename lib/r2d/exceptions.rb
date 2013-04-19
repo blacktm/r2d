@@ -1,6 +1,6 @@
 # exceptions.rb
 
-module R2d
+module R2D
   class LearnRubyError < StandardError
     def initialize(msg)
       puts msg.error

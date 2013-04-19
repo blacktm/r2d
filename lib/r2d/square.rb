@@ -1,6 +1,6 @@
 # square.rb
 
-module R2d
+module R2D
   class Square < Rectangle
     attr_reader :size
 

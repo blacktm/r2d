@@ -1,6 +1,6 @@
 # sound.rb
 
-module R2d
+module R2D
   class Sound
 
   end

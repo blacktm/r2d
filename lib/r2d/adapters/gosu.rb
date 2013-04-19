@@ -2,7 +2,7 @@
 
 require 'gosu'
 
-module R2d
+module R2D
   module Adapters
     class GosuWindow < ::Gosu::Window
       attr_writer :update_proc, :cursor
