@@ -1,29 +1,25 @@
 # helpers.rb
 
 module R2D
-  module Helpers
-    def draw_line(x1, y1, x2, y2, c)
-      Window.add(Line.new(x1, y1, x2, y2, c))
-      return nil
+  module Helpers    
+    def mouse_x
+      Window.mouse_x
     end
-
-    def draw_triangle(x1, y1, x2, y2, x3, y3, c)
-      Window.add(Triangle.new(x1, y1, x2, y2, x3, y3, c))
-      return nil
+    
+    def mouse_y
+      Window.mouse_y
     end
-
-    def draw_rect(x, y, w, h, c)
-      Window.add(Rectangle.new(x, y, w, h, c))
-      return nil
+    
+    def on_key(key, &block)
+      Window.on_key(key, &block)
     end
-
-    def draw_square(x, y, s, c)
-      Window.add(Square.new(x, y, s, c))
-      return nil
-    end
-
+    
     def key_down?(key)
       Window.key_down?(key)
+    end
+    
+    def key_down(key, &block)
+      Window.key_down(key, &block)
     end
     
     def update(&block)
@@ -33,6 +29,8 @@ module R2D
     def window(opts={})
       if opts == :show
         Window.show
+      elsif opts == :clear
+        Window.clear
       else
         Window.create(width: opts[:width],
                       height: opts[:height],
