@@ -18,6 +18,11 @@ module R2D
         return nil
       end
 
+      def draw_square(x, y, s, c)
+        Window.add(Square.new(x, y, s, c))
+        return nil
+      end
+
       def key_down?(key)
         Window.key_down?(key)
       end
