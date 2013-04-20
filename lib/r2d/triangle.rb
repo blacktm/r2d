@@ -1,6 +1,6 @@
 # triangle.rb
 
-module R2d
+module R2D
   class Triangle
     attr_accessor :x1, :y1, :c1,
                   :x2, :y2, :c2,

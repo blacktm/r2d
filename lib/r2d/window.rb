@@ -1,6 +1,6 @@
 # window.rb
 
-module R2d
+module R2D
   class Window
     # initialize(width, height, fullscreen, update_interval = 16.666666)
     @@window = nil

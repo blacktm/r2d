@@ -1,6 +1,6 @@
 # color.rb
 
-module R2d
+module R2D
   class Color
     def self.rgba(c)
       case c

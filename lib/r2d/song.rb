@@ -1,6 +1,6 @@
 # song.rb
 
-module R2d
+module R2D
   class Song
 
     def initialize(path)

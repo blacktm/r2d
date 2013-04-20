@@ -1,6 +1,6 @@
 # helpers.rb
 
-module R2d
+module R2D
   class Helpers
     class << self
       def draw_line(x1, y1, x2, y2, c)

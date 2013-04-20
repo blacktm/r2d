@@ -1,6 +1,6 @@
 # rectangle.rb
 
-module R2d
+module R2D
   class Rectangle < Quad
 
     attr_reader :x, :y, :width, :height

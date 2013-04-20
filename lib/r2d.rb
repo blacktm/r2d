@@ -16,5 +16,5 @@ require 'r2d/sound'
 require 'r2d/exceptions'
 require 'r2d/helpers'
 
-module R2d
+module R2D
 end

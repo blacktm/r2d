@@ -1,7 +1,7 @@
 # circle.rb
 # https://gist.github.com/661266
 
-module R2d
+module R2D
   class Circle
     attr_reader :columns, :rows
 
