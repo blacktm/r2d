@@ -7,7 +7,7 @@ module R2D
 
     def self.create(width: 800, height: 600, background: nil, fullscreen: false)
       if !@adapter
-        @adapter = GosuAdapter.new(width, height)
+        @adapter = Adapters::GosuAdapter.new(width, height)
         true
       else
         false

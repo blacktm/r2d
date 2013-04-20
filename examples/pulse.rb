@@ -1,27 +1,18 @@
 require 'r2d'
 
-Window.create({
-  width: 425,
-  height: 425
-})
+window width: 425, height: 425
 
-s1 = Square.new(100, 100, 100, [0, 0, 0, 0])
-s1.add
-s2 = Square.new(100, 210, 100, [0, 0, 0, 0])
-s2.add
-s3 = Square.new(210, 100, 100, [0, 0, 0, 0])
-s3.add
-s4 = Square.new(210, 210, 100, [0, 0, 0, 0])
-s4.add
-s6 = Square.new(150, 150, 110, [0, 0, 0, 255])
-s6.add
-s5 = Square.new(155, 155, 100, [0, 0, 0, 255])
-s5.add
+s1 = Square.new(100, 100, 100, [0, 0, 0, 0], true)
+s2 = Square.new(100, 210, 100, [0, 0, 0, 0], true)
+s3 = Square.new(210, 100, 100, [0, 0, 0, 0], true)
+s4 = Square.new(210, 210, 100, [0, 0, 0, 0], true)
+s6 = Square.new(150, 150, 110, [0, 0, 0, 255], true)
+s5 = Square.new(155, 155, 100, [0, 0, 0, 255], true)
 
 c = 0
 switch = true
 
-Window.update do
+update do
 
   if switch
     c += 5
@@ -40,19 +31,9 @@ Window.update do
   s3.color = [100, 200, c, 255]
   s4.color = [75, c, 255, 255]
   
-  if c < 0 or c > 255 then s5.color = [rand(0..255), rand(0..255), rand(0..255), 255] end
+  if c < 0 or c > 255
+    s5.color = [rand(0..255), rand(0..255), rand(0..255), 255]
+  end
 end
 
-
-
-
-
-
-
-
-
-
-
-
-
-Window.show
+window :show

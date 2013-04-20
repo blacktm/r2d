@@ -1,53 +1,49 @@
 require 'r2d'
 
-Window.create
+window width: 640, height: 480
 
-s1 = Square.new(0, 0, 100, "green")
-s2 = Square.new(100, 100, 100, [30, 100, 200, 255])
+s1 = Square.new(0, 0, 100, "green", true)
+s2 = Square.new(100, 100, 100, [30, 100, 200, 255], true)
 
-s1.add
-s2.add
-
-
-Window.on_key 'r' do
+on_key 'r' do
   puts s1.remove
 end
 
-Window.on_key 'a' do
+on_key 'a' do
   puts s1.add
 end
 
-Window.key_down 'l' do
+key_down 'l' do
   s1.size += 10
 end
 
-Window.key_down 's' do
+key_down 's' do
   s1.size -= 10
 end
 
 px = 5
 
-Window.key_down 'left' do
+key_down 'left' do
   s2.x -= px
 end
 
-Window.key_down 'right' do
+key_down 'right' do
   s2.x += px
 end
 
-Window.key_down 'up' do
+key_down 'up' do
   s2.y -= px
 end
 
-Window.key_down 'down' do
+key_down 'down' do
   s2.y += px
 end
 
 
-Window.update do
-  s1.x = Window.mouse_x
-  s1.y = Window.mouse_y
+update do
+  s1.x = mouse_x
+  s1.y = mouse_y
 end
 
 
-Window.show
+window :show
