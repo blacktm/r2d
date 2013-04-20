@@ -114,7 +114,7 @@ module R2D
         when ('a'..'z') || ('A'..'Z') || ('0'..'9')
           id = char_to_button_id(key)
         else
-          raise LearnRubyError, "The key '#{key}' is not valid!"
+          raise R2DError, "The key '#{key}' is not valid!"
         end
       end
 
