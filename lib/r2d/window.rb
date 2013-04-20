@@ -12,7 +12,7 @@ module R2D
       fs = opts[:fullscreen]
 
       if !@@window
-        @@window = GosuWindow.new(w, h)
+        @@window = Adapters::GosuWindow.new(w, h)
         true
       else
         false
