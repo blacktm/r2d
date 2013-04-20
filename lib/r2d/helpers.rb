@@ -21,6 +21,10 @@ module R2D
       def key_down?(key)
         Window.key_down?(key)
       end
+      
+      def window(opts={})
+        # TODO: set window options
+      end
     end
   end
 end

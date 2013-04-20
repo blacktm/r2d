@@ -1,17 +1,17 @@
-# gosu_window.rb
+# gosu.rb
 
 require 'gosu'
 
 module R2D
   module Adapters
-    class GosuWindow < ::Gosu::Window
+    class GosuAdapter < ::Gosu::Window
       attr_writer :update_proc, :cursor
 
       def initialize(w=800, h=600, fs=false)
         # super 800, 600, false
         super w, h, fs
 
-        self.caption = "Learn Ruby"
+        self.caption = "R2D"
 
         @cursor = true
         @objects = []

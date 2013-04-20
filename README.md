@@ -1,16 +1,123 @@
-# R2D - A Ruby 2D Graphics Interface
+# R2D: A Ruby 2D Graphics Interface
+
+R2D is a graphics interface for drawing 2D graphics, animations, playing audio, capturing input, and more.
+
+**The API spec is currently being rewritten and reimplemented.** Things will not work in the meantime. 
+
+# Contributing to R2D
+
+This library is in **very early development**, which means the design direction, implementation, and final API spec is still in flux. Please [contact me](https://twitter.com/blacktm) or open an issue *before* sending a pull request.
 
 # Installing
 
-To install the gem, use:
+Until a v0.1.0 release, this gem will only be available locally. To build and install the gem, use:
 
 ```
-$ gem install r2d
+$ gem build r2d.gemspec
+
+$ gem install r2d-0.0.0.gem
 ```
 
-# Drawing
+# A Simple R2D Application
 
-Shapes and images can be drawn procedurally using the methods below:
+```ruby
+require 'r2d'
+
+window width: 640, height: 480
+
+r = Rectangle.new(0, 0, 100, 100, "blue")
+r.add
+
+window :show
+```
+
+
+<!--
+
+# A Simple R2D Application
+
+## Creating the Window
+
+Every R2D application starts with creating a window. This is done by calling the `create` method on the `Window` singleton.
+
+```ruby
+require 'r2d'
+
+Window.create
+```
+
+## Setting Window Attributes
+
+The window also has various attributes, like width and height.
+
+```ruby
+require 'r2d'
+
+Window.create({
+  width: 400,
+  height: 300
+})
+```
+
+## Drawing Shapes
+
+To draw basic shapes, create a new instance of the class representing the shape.
+
+```ruby
+s = Square.new
+t = Triangle.new
+```
+
+## Adding Shapes and Displaying the Window
+
+Once shapes have been created, add them to the `Window` and open it using the `show` method.
+
+```ruby
+require 'r2d'
+
+Window.create({
+  width: 400,
+  height: 300
+})
+
+s = Square.new
+t = Triangle.new
+
+Window.add(s)
+Window.add(t)
+Window.show
+```
+
+That is a basic R2D application. Read the reference below to learn about all the things R2D allows you to do. See the [examples](/examples) directory for more sample applications.
+
+
+
+# Data Types
+
+Colors:
+[r, g, b, a]
+
+# The Window
+
+TODO:
+- What is a window?
+- How does it work, what does it do?
+- All operating systems?
+
+
+## Window Attributes
+
+Attributes change the appearance and behavior of the window. These are applied when the `create` method is called.
+
+```ruby
+Window.create({
+  title: 'My App'      # 'R2D' by default
+  width: 400,          # 640 by default
+  height: 300,         # 480 by default
+  cursor: false        # `true` by default
+  background: 'white'  # 'black' by default
+})
+```
 
 ### Available Parameters
 
@@ -33,59 +140,59 @@ c = [r, g, b, a]
 ## Shapes
 
 ```ruby
-R2d::Helpers.draw_line(x1, y1, x2, y2, c)
-R2d::Helpers.draw_triangle(x1, y1, x2, y2, x3, y3, c)
-R2d::Helpers.draw_square(x, y, s, c)
-R2d::Helpers.draw_rect(x, y, w, h, c)
-R2d::Helpers.draw_text(x, y, string, c)
+R2D::Helpers.draw_line(x1, y1, x2, y2, c)
+R2D::Helpers.draw_triangle(x1, y1, x2, y2, x3, y3, c)
+R2D::Helpers.draw_square(x, y, s, c)
+R2D::Helpers.draw_rect(x, y, w, h, c)
+R2D::Helpers.draw_text(x, y, string, c)
 ```
 
 ### Examples
 
 ```ruby
-R2d::Helpers.draw_line(100, 150, 300, 350, "red")
-R2d::Helpers.draw_triangle(200, 50, 100, 300, 400, 300, "orange")
-R2d::Helpers.draw_square(10, 30, 50, [255, 255, 100, 150])
-R2d::Helpers.draw_rect(20, 20, 40, 40, [0, 255, 0, 255])
-R2d::Helpers.draw_text(50, 50, "Hello world!", "blue")
+R2D::Helpers.draw_line(100, 150, 300, 350, "red")
+R2D::Helpers.draw_triangle(200, 50, 100, 300, 400, 300, "orange")
+R2D::Helpers.draw_square(10, 30, 50, [255, 255, 100, 150])
+R2D::Helpers.draw_rect(20, 20, 40, 40, [0, 255, 0, 255])
+R2D::Helpers.draw_text(50, 50, "Hello world!", "blue")
 ```
 
 ## Images
 
-<!-- TODO: Img formats? -->
+TODO: Img formats?
 
 ```ruby
-R2d::Helpers.draw_img(x, y, img_path)
+R2D::Helpers.draw_img(x, y, img_path)
 ```
 
 ### Examples
 
 ```ruby
-R2d::Helpers.draw_img(50, 100, "galaxy.jpg")
+R2D::Helpers.draw_img(50, 100, "galaxy.jpg")
 ```
 
 # Shape and Image Classes
 
 Each shape has an associated class. Shapes can be instantiated and added
-to the window using `R2d::Window.add(shape)` and removed with `R2d::Window.remove(shape)`.
+to the window using `R2D::Window.add(shape)` and removed with `R2D::Window.remove(shape)`.
 
 ## Lines
 
 ```ruby
-l = R2d::Line.new(x1, y1, x2, y2, c)
+l = R2D::Line.new(x1, y1, x2, y2, c)
 
 l.x1 = 10
 l.y1 = 10
 l.color = "yellow"
 
-R2d::Window.add(l)
-R2d::Window.remove(l)
+R2D::Window.add(l)
+R2D::Window.remove(l)
 ```
 
 ## Triangles
 
 ```ruby
-t = R2d::Triangle.new(x1, y1, x2, y2, x3, y3, c)
+t = R2D::Triangle.new(x1, y1, x2, y2, x3, y3, c)
 
 t.color = "green"
 t.x3 = 75
@@ -95,21 +202,21 @@ t.y3 = 150
 ## Squares
 
 ```ruby
-s = R2d::Square.new(x, y, s)
-s = R2d::Square.new(x, y, s, c)
+s = R2D::Square.new(x, y, s)
+s = R2D::Square.new(x, y, s, c)
 
 s.width = 25
 s.height = 50
 s.color = "red"
 
-R2d::Window.add(s)
+R2D::Window.add(s)
 ```
 
 ## Rectangles
 
 ```ruby
-r = R2d::Rectangle.new(x, y, w, h)
-r = R2d::Rectangle.new(x, y, w, h, c)
+r = R2D::Rectangle.new(x, y, w, h)
+r = R2D::Rectangle.new(x, y, w, h, c)
 
 r.x = 10
 r.y = 20
@@ -117,18 +224,18 @@ r.width = 200
 r.height = 50
 r.color = "blue"
 
-R2d::Window.add(r)
+R2D::Window.add(r)
 ```
 
 # Images
 
 ```ruby
-img = R2d::Image.new(x, y, img_path)
+img = R2D::Image.new(x, y, img_path)
 
 img.x = 10
 img.y = 20
 ```
-<!--
+
 # Gradients
 
 ## Parameters
@@ -172,7 +279,7 @@ All gradient methods take a Hash where keys refer to the corners of the shape, a
 ### Examples
 
 ```ruby
-r = R2d::Rectangle.new(x, y, w, h)
+r = R2D::Rectangle.new(x, y, w, h)
 
 r.gradient = {
   :top => "red",
@@ -205,7 +312,7 @@ The triangle gradient method takes a Hash containing keys (symbols) referring to
 ### Examples
 
 ```ruby
-t = R2d::Triangle.new(x1, y1, x2, y2, x3, y3)
+t = R2D::Triangle.new(x1, y1, x2, y2, x3, y3)
 
 t.gradient = {
   :first => "red",
@@ -227,15 +334,13 @@ The line gradient method takes a Hash containing keys (symbols) referring to the
 ### Examples
 
 ```ruby
-l = R2d::Line.new(x1, y1, x2, y2)
+l = R2D::Line.new(x1, y1, x2, y2)
 
 l.gradient = {
   :start => "red",
   :end => "blue",
 }
 ```
-
--->
 
 # Audio
 
@@ -244,7 +349,7 @@ l.gradient = {
 These are long audio clips. (More soon.)
 
 ```ruby
-s = R2d::Song.new("track.mp3")
+s = R2D::Song.new("track.mp3")
 s.play
 s.playing?  # true
 s.pause
@@ -258,7 +363,7 @@ s.loop
 Sounds are short audio clips. (More soon.)
 
 ```ruby
-s = R2d::Sound.new("snare.mp3")
+s = R2D::Sound.new("snare.mp3")
 s.play
 ```
 
@@ -271,26 +376,26 @@ Attributes change the appearance and behavior of the window. These must be appli
 Setting the window size:
 
 ```ruby
-R2d::Window.width = w
-R2d::Window.height = h
+R2D::Window.width = w
+R2D::Window.height = h
 ```
 
 Changing the background color, where `color` is a string or an array of `[r, g, b, a]` values.
 
 ```ruby
-R2d::Window.background = color
+R2D::Window.background = color
 ```
 
 Showing the cursor over the window (default = `true`):
 
 ```ruby
-R2d::Window.cursor = false
+R2D::Window.cursor = false
 ```
 
 Setting the title (default = `"Learn Ruby"`):
 
 ```ruby
-R2d::Window.title = "Hello world!"
+R2D::Window.title = "Hello world!"
 ```
 
 ## Adding/Removing Objects
@@ -298,15 +403,15 @@ R2d::Window.title = "Hello world!"
 Objects can be added and removed from the window using:
 
 ```ruby
-r = R2d::Rectangle.new(50, 50, 100, 100)
-R2d::Window.add(r)
-R2d::Window.remove(r)
+r = R2D::Rectangle.new(50, 50, 100, 100)
+R2D::Window.add(r)
+R2D::Window.remove(r)
 ```
 
 Additionally, all objects have an `add` and `remove` convenience method which will do the same:
 
 ```ruby
-r = R2d::Rectangle.new(50, 50, 100, 100)
+r = R2D::Rectangle.new(50, 50, 100, 100)
 r.add
 r.remove
 ```
@@ -314,7 +419,7 @@ r.remove
 If an object is already in the window, `add` will return `false`. Similarly, if the object is not in the window, `remove` will return `false`.
 
 ```ruby
-r = R2d::Rectangle.new(50, 50, 100, 100)
+r = R2D::Rectangle.new(50, 50, 100, 100)
 
 r.add     # true
 r.add     # false - already in window
@@ -325,7 +430,7 @@ r.remove  # false - not in window
 All objects can be removed from the window using:
 
 ```ruby
-R2d::Window.clear
+R2D::Window.clear
 ```
 
 ## Capturing Input
@@ -333,7 +438,7 @@ R2d::Window.clear
 To capture a single key press where `<key_string>` is any valid keyboard character `a..z`, `A..Z`, `0..9`, and string representing arrows, alt, control, shift, etc:
 
 ```ruby
-R2d::Window.on_key <key_string> do
+R2D::Window.on_key <key_string> do
   #...
 end
 ```
@@ -341,15 +446,15 @@ end
 ### Examples
 
 ```ruby
-R2d::Window.on_key 'm' do
+R2D::Window.on_key 'm' do
   puts "You pressed 'm'"
 end
 
-R2d::Window.on_key 'up' do
+R2D::Window.on_key 'up' do
   puts "Up arrow pressed"
 end
 
-R2d::Window.on_key 'space' do
+R2D::Window.on_key 'space' do
   puts "Spacebar pressed"
 end
 ```
@@ -359,7 +464,7 @@ end
 Mouse input can also be captured using the `'mouse_left'` and `'mouse_right'` strings.
 
 ```ruby
-R2d::Window.on_key 'mouse_right' do
+R2D::Window.on_key 'mouse_right' do
   puts "Mouse clicked in the window"
 end
 ```
@@ -369,7 +474,7 @@ end
 To detect whether a key is held down, use either...
 
 ```ruby
-R2d::Window.key_down <key_string> do
+R2D::Window.key_down <key_string> do
   #...
 end
 ```
@@ -378,7 +483,7 @@ or `Window.update`:
 
 
 ```ruby
-R2d::Window.update do
+R2D::Window.update do
   if key_down? <key_string>
     #...
   end
@@ -390,13 +495,13 @@ end
 The two examples below are equivalent and both execute in the main update loop.
 
 ```ruby
-R2d::Window.key_down 'x' do
+R2D::Window.key_down 'x' do
   puts "'x' pressed at #{Time.now}"
 end
 ```
 
 ```ruby
-R2d::Window.update do
+R2D::Window.update do
   if key_down? 'x'
     puts "'x' pressed at #{Time.now}"
   end
@@ -405,10 +510,10 @@ end
 
 ## The Update Loop
 
-The `R2d::Window.update` block represents the main update loop. Anything in this block will update 60 times per second (by default):
+The `R2D::Window.update` block represents the main update loop. Anything in this block will update 60 times per second (by default):
 
 ```ruby
-R2d::Window.update do
+R2D::Window.update do
   #...
 end
 ```
@@ -418,24 +523,24 @@ end
 Mouse positions are relative to the top left corner of the window.
 
 ```ruby
-R2d::Window.mouse_x  # current 'x' position
-R2d::Window.mouse_y  # current 'y' position
+R2D::Window.mouse_x  # current 'x' position
+R2D::Window.mouse_y  # current 'y' position
 ```
 
 ## Showing the Window
 
-Use `R2d::Window.show` to display the window. This should only be called once.
+Use `R2D::Window.show` to display the window. This should only be called once.
 
 ```ruby
-s = R2d::Square.new(100, 100, 50, "red")
+s = R2D::Square.new(100, 100, 50, "red")
 s.add
 
-R2d::Window.show
+R2D::Window.show
 ```
 
 # Helpers
 
-The `R2d::Window` class has a number of helpers aliased to aid learning:
+The `R2D::Window` class has a number of helpers aliased to aid learning:
 
  - update
  - on_key
@@ -451,14 +556,14 @@ key_down 'x' do
 end
 ```
 
-Visual shapes and images also have knowledge of the `R2d::Window` class, so they can be added and removed from the window using their helper methods.
+Visual shapes and images also have knowledge of the `R2D::Window` class, so they can be added and removed from the window using their helper methods.
 
 ```ruby
-s = R2d::Square.new(x, y, s)
+s = R2D::Square.new(x, y, s)
 
-# Add and remove calling the `R2d::Window` class
-R2d::Window.add(s)
-R2d::Window.remove(s)
+# Add and remove calling the `R2D::Window` class
+R2D::Window.add(s)
+R2D::Window.remove(s)
 
 # Add and remove using the helper methods
 s.add
@@ -472,9 +577,11 @@ s.remove
 ```ruby
 x = Window.mouse_x
 
-R2d::Window.update do
-  if R2d::Window.mouse_x != x
-    puts x = R2d::Window.mouse_x
+R2D::Window.update do
+  if R2D::Window.mouse_x != x
+    puts x = R2D::Window.mouse_x
   end
 end
 ```
+
+-->

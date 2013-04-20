@@ -1,4 +1,4 @@
-require 'rspec/core/rake_task'
+# require 'rspec/core/rake_task'
 
 class String
   def error
@@ -14,11 +14,11 @@ class String
   end
 end
 
-desc "Run all tests"
-RSpec::Core::RakeTask.new(:spec) do |t|
-  #...
-  puts "\n\e[1;34mRunning tests...\e[0m\n\n"
-end
+# desc "Run all tests"
+# RSpec::Core::RakeTask.new(:spec) do |t|
+#   #...
+#   puts "\n\e[1;34mRunning tests...\e[0m\n\n"
+# end
 
 
 desc "Build Gem"
@@ -32,9 +32,8 @@ task :build do
   puts "Installing gem...".task
   `gem install r2d-0.0.0.gem`
   
-  puts "Done!".task, ""
+  puts "Done!".success, ""
   
 end
 
-
-task :default => :spec
+task :default => :build
