@@ -30,6 +30,37 @@ r.add
 window :show
 ```
 
+# Basic Drawing
+
+## Shapes
+
+### Squares
+
+```ruby
+s = Square.new(x, y, size)
+s = Square.new(x, y, size, color)
+
+s.width = 25
+s.height = 50
+s.color = "red"
+
+s.add
+```
+
+### Rectangles
+
+```ruby
+r = Rectangle.new(x, y, width, height)
+r = Rectangle.new(x, y, width, height, color)
+
+r.x = 10
+r.y = 20
+r.width = 200
+r.height = 50
+r.color = "blue"
+
+r.add
+```
 
 <!--
 
@@ -196,34 +227,6 @@ t = R2D::Triangle.new(x1, y1, x2, y2, x3, y3, c)
 t.color = "green"
 t.x3 = 75
 t.y3 = 150
-```
-
-## Squares
-
-```ruby
-s = R2D::Square.new(x, y, s)
-s = R2D::Square.new(x, y, s, c)
-
-s.width = 25
-s.height = 50
-s.color = "red"
-
-R2D::Window.add(s)
-```
-
-## Rectangles
-
-```ruby
-r = R2D::Rectangle.new(x, y, w, h)
-r = R2D::Rectangle.new(x, y, w, h, c)
-
-r.x = 10
-r.y = 20
-r.width = 200
-r.height = 50
-r.color = "blue"
-
-R2D::Window.add(r)
 ```
 
 # Images
