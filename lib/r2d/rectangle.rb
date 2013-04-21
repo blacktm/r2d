@@ -4,10 +4,11 @@ class Rectangle < Quad
 
   attr_reader :x, :y, :width, :height
 
-  def initialize(x, y, w, h, c="white")
+  def initialize(x, y, w, h, c="white", visible=true)
     @x, @y, @width, @height, @color = x, y, w, h, c
     update_coords(x, y, w, h)
     update_color(c)
+    if visible then add end
   end
 
   def x=(x)

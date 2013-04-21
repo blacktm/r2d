@@ -2,7 +2,6 @@
 # A class representing a quadrilateral
 
 class Quad
-
   # x1,y1 == top left
   # x2,y2 == top right
   # x3,y3 == bottom left
@@ -13,10 +12,11 @@ class Quad
               :x3, :y3, :c3,
               :x4, :y4, :c4
 
-  def initialize(x1, y1, x2, y2, x3, y3, x4, y4, c="white")
+  def initialize(x1, y1, x2, y2, x3, y3, x4, y4, c="white", visible=true)
     @x, @y, @width, @height, @color = x, y, w, h, c
     update_coords(x, y, w, h)
     update_color(c)
+    if visible then add end
   end
 
   def color=(c)

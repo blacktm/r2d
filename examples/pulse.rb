@@ -3,17 +3,11 @@ require 'r2d'
 window width: 425, height: 425
 
 s1 = Square.new(100, 100, 100, [0, 0, 0, 0])
-s1.add
 s2 = Square.new(100, 210, 100, [0, 0, 0, 0])
-s2.add
 s3 = Square.new(210, 100, 100, [0, 0, 0, 0])
-s3.add
 s4 = Square.new(210, 210, 100, [0, 0, 0, 0])
-s4.add
 s5 = Square.new(150, 150, 110, [0, 0, 0, 255])
-s5.add
 s6 = Square.new(155, 155, 100, [0, 0, 0, 255])
-s6.add
 
 c = 0
 switch = true

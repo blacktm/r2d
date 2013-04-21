@@ -2,8 +2,8 @@ require 'r2d'
 
 window width: 640, height: 480
 
-s1 = Square.new(0, 0, 100, "green", true)
-s2 = Square.new(100, 100, 100, [30, 100, 200, 255], true)
+s1 = Square.new(0, 0, 100, "green")
+s2 = Square.new(100, 100, 100, [30, 100, 200, 255])
 
 on_key 'r' do
   puts s1.remove

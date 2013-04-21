@@ -1,5 +1,6 @@
 # Roadmap
 
+<!--
 _Road to v0.1.0_
 
 - Add `Image`
@@ -39,3 +40,4 @@ _Road to v0.1.0_
 
   # See D3 implementation.
   ```
+-->
