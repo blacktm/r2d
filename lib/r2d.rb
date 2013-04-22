@@ -1,5 +1,6 @@
 # r2d.rb
 
+require 'r2d/version'
 require 'r2d/adapters/gosu'
 require 'r2d/window'
 require 'r2d/color'
@@ -15,6 +16,3 @@ require 'r2d/song'
 require 'r2d/sound'
 require 'r2d/exceptions'
 require 'r2d/helpers'
-
-module R2D
-end

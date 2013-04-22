@@ -1,6 +1,7 @@
 *.DS_Store
 *.gem
 *.sh
-tests/
+test/tmp
+test/version_tmp
 tmp/
 Gemfile.lock
