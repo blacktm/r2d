@@ -107,8 +107,8 @@ Attributes change the appearance and behavior of the window. These are applied b
 
 ```ruby
 title: 'My App'      # 'R2D' by default
-width: 400,          # 640 by default
-height: 300,         # 480 by default
+width: 400           # 640 by default
+height: 300          # 480 by default
 cursor: false        # `true` by default
 background: 'white'  # 'black' by default
 ```

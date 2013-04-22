@@ -1,12 +1,19 @@
 # Roadmap
 
-<!--
 _Road to v0.1.0_
 
-- Add `Image`
-- Add `Window` helpers
-- Switch to `'test/unit'`
-- Add command line coloring (except Windows)
+- Add `Triangle` class
+- Add `Image` class
+- Add `Text` class
+- Add `Line` class
+- Add documentation for `Quad` class
+- Add gradients support `Triangle`, and `Quad`
+- Add `Song` class
+  - A song is a long audio clip not kept in memory
+- Add `Sound` class
+  - A sound is a short audio clip which stays resident in memory for fast replaying
+
+<!--
 - `Image#animate_with`
   ```ruby
   ( ["a.jpg", "b.jpg"], millisecs)
