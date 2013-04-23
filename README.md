@@ -65,6 +65,8 @@ Parameters:
 x, y, size, color="white", visible=true
 ```
 
+Examples:
+
 ```ruby
 s = Square.new(x, y, size)
 s = Square.new(x, y, size, color, false)
@@ -85,6 +87,8 @@ Parameters:
 x, y, width, height, color="white", visible=true
 ```
 
+Examples:
+
 ```ruby
 r = Rectangle.new(x, y, width, height)
 r = Rectangle.new(x, y, width, height, color, false)
@@ -97,6 +101,59 @@ r.color = "blue"
 r.color = [0, 0, 255, 150]
 ```
 
+# Capturing Input
+
+## Keyboard and Mouse Buttons
+
+Do something once when key is pressed.
+
+```ruby
+on_key 'a' do
+  # letter 'a' pressed
+end
+```
+
+Do something repeatedly as key is held down.
+
+```ruby
+key_down 's' do
+  # letter 's' held down
+end
+```
+
+Valid character strings:
+
+```
+'up'
+'down'
+'left'
+'right'
+'left_alt'
+'right_alt'
+'left_control'
+'right_control'
+'left_shift'
+'right_shift'
+'backspace'
+'delete'
+'space'
+'tab'
+'return'
+'mouse_left'
+'mouse_right'
+('a'..'z') || ('A'..'Z') || ('0'..'9')
+```
+
+## Cursor Position
+
+Use these helper methods.
+
+```ruby
+         # Returns the mouse's:
+mouse_x  #  x-coordinate
+mouse_y  #  y-coordinate
+```
+
 # The Window
 
 R2D will create and manage a window instance for you.
@@ -106,11 +163,12 @@ R2D will create and manage a window instance for you.
 Attributes change the appearance and behavior of the window. These are applied before any drawing is done.
 
 ```ruby
-title: 'My App'      # 'R2D' by default
-width: 400           # 640 by default
-height: 300          # 480 by default
-cursor: false        # `true` by default
-background: 'white'  # 'black' by default
+                     # Defaults:
+title: "My App"      #  "R2D"
+width: 400           #  640
+height: 300          #  480
+cursor: false        #  `true`
+background: "white"  #  "black"
 ```
 
 Example:
@@ -128,6 +186,24 @@ window :clear
 ```
 
 Note this does not delete the objects themselves – the references remain intact. This is equivalent to calling `shape.remove`.
+
+# The Update Loop
+
+Do something each time the graphic environment is updated (60 times / second).
+
+```ruby
+update do
+  # do something
+end
+```
+
+
+
+
+
+
+
+
 
 <!--
 
