@@ -5,9 +5,11 @@ module R2D
     # initialize(width, height, fullscreen, update_interval = 16.666666)
     @adapter = nil
     
-    def self.create(width = 800, height = 600, background = nil, fullscreen = false)
+    def self.create(options = {})
+      defaults = {width: 800, height: 600, background: nil, fullscreen: false}
+      args = defaults.merge(options)
       if !@adapter
-        @adapter = Adapters::GosuAdapter.new(width, height)
+        @adapter = Adapters::GosuAdapter.new(args[:width], args[:height])
         true
       else
         false
