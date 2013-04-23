@@ -1,10 +1,12 @@
 # R2D: A Ruby 2D Graphics Interface
 
-R2D is a graphics interface for drawing 2D graphics, animations, playing audio, capturing input, and more. It's like [Rack](http://rack.github.io), but for graphics.
+R2D is a graphics interface for drawing 2D graphics, animations, playing audio, capturing input, and more.
 
 # Contributing
 
 This library is in **very early development**, which means the design direction, implementation, and final API spec is still in flux. Please [contact me](https://twitter.com/blacktm) or open an issue *before* sending a pull request.
+
+[View the Roadmap](https://github.com/blacktm/r2d/wiki/Roadmap) in the wiki.
 
 # Installing
 
@@ -154,7 +156,7 @@ mouse_y  #  y-coordinate
 
 # The Window
 
-R2D will create and manage a window instance for you.
+R2D will create and manage a window instance for you. The `window` method is provided to send commands to the window instance.
 
 ## Window Attributes
 
