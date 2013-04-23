@@ -1,3 +1,4 @@
+$:.push File.expand_path('../lib', __FILE__)
 require 'r2d/version'
 
 Gem::Specification.new do |s|
