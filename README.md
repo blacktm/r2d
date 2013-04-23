@@ -1,8 +1,6 @@
 # R2D: A Ruby 2D Graphics Interface
 
-R2D is a graphics interface for drawing 2D graphics, animations, playing audio, capturing input, and more.
-
-**The API spec is currently being rewritten and reimplemented.** Things will not work in the meantime. 
+R2D is a graphics interface for drawing 2D graphics, animations, playing audio, capturing input, and more. It's like [Rack](http://rack.github.io), but for graphics.
 
 # Contributing
 
@@ -32,7 +30,7 @@ r = Rectangle.new(0, 0, 100, 100, "blue")
 window :show
 ```
 
-That's basic R2D application. Read the reference below to learn about all the things you can do with R2D. See the [examples](/examples) directory for more samples to try.
+That's a basic R2D application. Read the reference below to learn about all the things you can do with R2D. See the [examples](/examples) directory for more sample applications to try.
 
 # Basic Drawing
 
@@ -105,7 +103,7 @@ r.color = [0, 0, 255, 150]
 
 ## Keyboard and Mouse Buttons
 
-Do something once when key is pressed.
+Do something one time when a key is pressed.
 
 ```ruby
 on_key 'a' do
@@ -113,7 +111,7 @@ on_key 'a' do
 end
 ```
 
-Do something repeatedly as key is held down.
+Do something repeatedly as a key is held down.
 
 ```ruby
 key_down 's' do
@@ -146,10 +144,10 @@ Valid character strings:
 
 ## Cursor Position
 
-Use these helper methods.
+Use these helper methods to get the position of the cursor.
 
 ```ruby
-         # Returns the mouse's:
+         # Returns the mouse:
 mouse_x  #  x-coordinate
 mouse_y  #  y-coordinate
 ```
@@ -160,7 +158,7 @@ R2D will create and manage a window instance for you.
 
 ## Window Attributes
 
-Attributes change the appearance and behavior of the window. These are applied before any drawing is done.
+Attributes change the appearance and behavior of the window. These are applied before drawing is done.
 
 ```ruby
                      # Defaults:
