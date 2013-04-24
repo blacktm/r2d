@@ -32,7 +32,7 @@ r = Rectangle.new(0, 0, 100, 100, "blue")
 window :show
 ```
 
-That's a basic R2D application. Read the reference below to learn about all the things you can do with R2D. See the [examples](/examples) directory for more sample applications to try.
+Read the reference below to learn about all the things you can do with R2D. See the [examples](/examples) directory for more sample applications to try.
 
 # Basic Drawing
 
@@ -124,6 +124,7 @@ end
 Valid character strings:
 
 ```
+('a'..'z') || ('A'..'Z') || ('0'..'9')
 'up'
 'down'
 'left'
@@ -141,7 +142,6 @@ Valid character strings:
 'return'
 'mouse_left'
 'mouse_right'
-('a'..'z') || ('A'..'Z') || ('0'..'9')
 ```
 
 ## Cursor Position
