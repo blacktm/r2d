@@ -1,28 +1,12 @@
 # exceptions.rb
 
 module R2D
-  class LearnRubyError < StandardError
+  class R2DError < StandardError
     def initialize(msg)
-      puts msg.error
+      super(msg)
+      puts msg
       puts "Occurred in:"
       puts "  " + caller.last, "\n"
     end
-  end
-
-
-  # Testing exceptions
-
-  class SampleException < StandardError
-    def initialize(msg="This is an example exception!")
-      super(msg)
-    end
-  end
-end
-
-class String
-  def error
-    # red => \e[0;31
-    # red/bold => \e[1;31m
-    "\n\e[1;31m#{self}\e[0m"
   end
 end

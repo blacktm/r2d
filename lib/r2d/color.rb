@@ -23,9 +23,9 @@ module R2D
       when Array
         r, g, b, a = c[0], c[1], c[2], c[3]
       else
-        raise LearnRubyError, "That color doesn't exist!"
+        raise R2DError, "Color does not exist!"
       end
-
+      
       return r, g, b, a
     end
   end

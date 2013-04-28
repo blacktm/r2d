@@ -44,7 +44,7 @@ describe R2D::Color do
     end
 
     it 'raises an error when passed invalid input' do
-      lambda { R2D::Color.rgba('invalid-color') }.must_raise R2D::LearnRubyError
+      lambda { R2D::Color.rgba('invalid-color') }.must_raise R2D::R2DError
     end
   end
 end
