@@ -1,4 +1,4 @@
-# require 'rspec/core/rake_task'
+require 'rake/testtask'
 
 class String
   def error
@@ -14,12 +14,10 @@ class String
   end
 end
 
-# desc "Run all tests"
-# RSpec::Core::RakeTask.new(:spec) do |t|
-#   #...
-#   puts "\n\e[1;34mRunning tests...\e[0m\n\n"
-# end
-
+Rake::TestTask.new do |t|
+  t.test_files = FileList['test/*_test.rb']
+  t.verbose = true
+end
 
 desc "Build Gem"
 task :build do
