@@ -9,13 +9,6 @@ module R2D
     end
   end
 
-  class String
-    def error
-      # red => \e[0;31
-      # red/bold => \e[1;31m
-      "\n\e[1;31m#{self}\e[0m"
-    end
-  end
 
   # Testing exceptions
 
@@ -23,5 +16,13 @@ module R2D
     def initialize(msg="This is an example exception!")
       super(msg)
     end
+  end
+end
+
+class String
+  def error
+    # red => \e[0;31
+    # red/bold => \e[1;31m
+    "\n\e[1;31m#{self}\e[0m"
   end
 end
