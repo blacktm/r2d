@@ -121,6 +121,26 @@ q.color = "blue"
 q.color = [0, 0, 255, 150]
 ```
 
+### Triangles
+
+Parameters:
+
+```
+x1, y1, x2, y2, x3, y3, color="white", visible=true
+```
+
+Examples:
+
+```ruby
+t = Triangle.new(x1, y1, x2, y2, x3, y3)
+t = Triangle.new(x1, y1, x2, y2, x3, y3, color, false)
+
+t.x1 = 10
+t.y1 = 20
+t.color = "red"
+t.color = [0, 0, 255, 1]
+```
+
 # Capturing Input
 
 ## Keyboard and Mouse Buttons
@@ -239,16 +259,6 @@ l = Line.new(x1, y1, x2, y2, c)
 l.x1 = 10
 l.y1 = 10
 l.color = "yellow"
-```
-
-## Triangles
-
-```ruby
-t = Triangle.new(x1, y1, x2, y2, x3, y3, c)
-
-t.color = "green"
-t.x3 = 75
-t.y3 = 150
 ```
 
 # Images
