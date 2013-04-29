@@ -90,6 +90,10 @@ module R2D
       @adapter.show
     end
     
+    def self.adapter
+      @adapter
+    end
+    
     private
     
     def self.exists?
