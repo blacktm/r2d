@@ -1,6 +1,7 @@
 # square.rb
 
 class Square < Rectangle
+  
   attr_reader :size
 
   def initialize(x, y, s, c="white", visible=true)

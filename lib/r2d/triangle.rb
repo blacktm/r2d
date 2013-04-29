@@ -1,7 +1,7 @@
 # triangle.rb
 
-
 class Triangle
+  
   attr_accessor :x1, :y1, :c1,
                 :x2, :y2, :c2,
                 :x3, :y3, :c3

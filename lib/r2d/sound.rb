@@ -1,7 +1,5 @@
 # sound.rb
 
-module R2D
-  class Sound
+class Sound
 
-  end
 end
