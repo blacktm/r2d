@@ -101,6 +101,26 @@ r.color = "blue"
 r.color = [0, 0, 255, 150]
 ```
 
+### Quadrilaterals
+
+Parameters:
+
+```
+x1, y1, x2, y2, x3, y3, x4, y4, color="white", visible=true
+```
+
+Examples:
+
+```ruby
+q = Quad.new(x1, y1, x2, y2, x3, y3, x4, y4)
+q = Quad.new(x1, y1, x2, y2, x3, y3, x4, y4, color, false)
+
+q.x1 = 10
+q.y1 = 20
+q.color = "blue"
+q.color = [0, 0, 255, 150]
+```
+
 # Capturing Input
 
 ## Keyboard and Mouse Buttons
