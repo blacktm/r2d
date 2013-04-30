@@ -143,6 +143,13 @@ module R2D
       def draw
         @objects.each do |o|
           case o
+          when Line
+            draw_quad(
+              o.qx1, o.qy1, o.c1,
+              o.qx2, o.qy2, o.c2,
+              o.qx3, o.qy3, o.c3,
+              o.qx4, o.qy4, o.c4
+            )
           when Triangle
             draw_triangle(
               o.x1, o.y1, o.c1,
