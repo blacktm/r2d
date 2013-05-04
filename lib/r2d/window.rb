@@ -2,7 +2,7 @@
 
 module R2D
   module Window
-    # initialize(width, height, fullscreen, update_interval = 16.666666)
+    
     @adapter = nil
     
     def self.create(width: 800, height: 600, background: nil, fullscreen: false)
@@ -85,6 +85,21 @@ module R2D
       @adapter.current_song
     end
     
+    def self.sound(path)
+      self.exists?
+      @adapter.sound(path)
+    end
+    
+    def self.image(path)
+      self.exists?
+      @adapter.image(path)
+    end
+    
+    def self.text(h=20, font='default')
+      self.exists?
+      @adapter.text(h, font)
+    end
+    
     def self.show
       self.exists?
       @adapter.show
@@ -98,7 +113,7 @@ module R2D
     
     def self.exists?
       if !@adapter
-        raise R2DError, "Window has not yet been created. Use 'Window.create'"
+        raise R2DError, "Window has not yet been created."
       else
         true
       end
@@ -107,9 +122,9 @@ module R2D
     # def self.exists?
     #   begin
     #     if !@adapter
-    #       raise WindowError, "Window has not yet been created. Use 'Window.create'"
+    #       raise R2DError, "Window has not yet been created."
     #     end
-    #   rescue WindowError => e
+    #   rescue R2DError => e
     #     puts e.message
     #     puts "Occurred in:"
     #     puts "  " + e.backtrace.last, "\n"

@@ -69,6 +69,19 @@ module R2D
         Gosu::Song.current_song
       end
       
+      def sound(path)
+        Gosu::Sample.new(self, path)
+      end
+      
+      def image(path)
+        Gosu::Image.new(self, path, true)
+      end
+      
+      def text(h, font)
+        if font == 'default' then font = Gosu::default_font_name end
+        Gosu::Font.new(self, font, h)
+      end
+      
       private
       
       def key_lookup(key)
@@ -105,7 +118,7 @@ module R2D
           id = Gosu::KbTab
         when 'return'
           id = Gosu::KbReturn
-
+          
         when 'mouse_left'
           id = Gosu::MsLeft
         when 'mouse_right'
@@ -132,7 +145,7 @@ module R2D
       
       def update
         @update_proc.call
-
+        
         @keys_down.each_key do |id|
           if button_down? id
             @keys_down[id].call
@@ -164,9 +177,13 @@ module R2D
               o.x4, o.y4, o.c4
             )
           when Image
-            o.draw
+            # .draw(x, y, z, factor_x=1, factor_y=1, color=0xffffffff, mode=:default)
+            o.adapter.draw(o.x, o.y, 0, o.f_x, o.f_y)
+          when Text
+            # .draw(text, x, y, z, factor_x=1, factor_y=1, color=0xffffffff, mode=:default)
+            o.adapter.draw(o.content, o.x, o.y, 0, 1, 1, o.c)
           else
-            # TODO: raise exception; not valid type
+            raise R2DError, "Cannot draw type '#{o.class}'"
           end
         end
       end
