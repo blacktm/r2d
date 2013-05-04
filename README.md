@@ -50,7 +50,7 @@ h = the height  (Integer)
 c = the color  (String)
 or...
 c = [r, g, b, a] (Array)
-  where elements are 0..255 (Integer) or 0.0..1.0 (Float):
+  where elements are 0..255 (Integer) or 0.0..1.0 (Float)
     r = red
     g = green
     b = blue
@@ -369,7 +369,6 @@ t = Text.new(x, y, 20, "hello world", "blue", false)
 t.x = 10
 t.y = 20
 ```
--->
 
 <!--
 # Playing Audio
