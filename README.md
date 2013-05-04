@@ -32,28 +32,40 @@ r = Rectangle.new(0, 0, 100, 100, "blue")
 window :show
 ```
 
-Read the reference below to learn about all the things you can do with R2D. See the [examples](/examples) directory for more sample applications to try.
+Read the reference below to learn about all the things you can do with R2D. See the [examples](/examples) directory for more sample applications.
+
+<!-- TODO: Add note about what `method/=` means -->
 
 # Basic Drawing
 
 ## Common Parameters
 
 ```
-x = an 'x' coordinate (number)
-y = an 'y' coordinate (number)
-s = the size   (number)
-w = the width  (number)
-h = the height (number)
+x = an 'x'  coordinate (Integer)
+y = an 'y'  coordinate (Integer)
+s = the size    (Integer)
+w = the width   (Integer)
+h = the height  (Integer)
 
-c = the color  (string)
+c = the color  (String)
 or...
-c = [r, g, b, a] (array)
-  where...
-   r = red   (number) 0..255
-   g = green (number) 0..255
-   b = blue  (number) 0..255
-   a = alpha (number) 0..255
+c = [r, g, b, a] (Array)
+  where elements are 0..255 (Integer) or 0.0..1.0 (Float):
+    r = red
+    g = green
+    b = blue
+    a = alpha
 ```
+
+## Common Instance Methods
+
+All objects that can be drawn have the methods:
+
+```
+add, remove, show, hide
+```
+
+`add` and `show`, along with `remove` and `hide` are aliased.
 
 ## Shapes
 
@@ -65,6 +77,12 @@ Parameters:
 x, y, size, color="white", visible=true
 ```
 
+Instance methods:
+
+```
+x/=, y/=, size=, color=
+```
+
 Examples:
 
 ```ruby
@@ -73,8 +91,7 @@ s = Square.new(x, y, size, color, false)
 
 s.x = 10
 s.y = 20
-s.width = 25
-s.height = 50
+s.size = 25
 s.color = "red"
 s.color = [250, 0, 0, 100]
 ```
@@ -85,6 +102,12 @@ Parameters:
 
 ```
 x, y, width, height, color="white", visible=true
+```
+
+Instance methods:
+
+```
+x/=, y/=, width/=, height/=, color=
 ```
 
 Examples:
@@ -109,6 +132,12 @@ Parameters:
 x1, y1, x2, y2, x3, y3, x4, y4, color="white", visible=true
 ```
 
+Instance methods:
+
+```
+x1/=, y1/=, x2/=, y2/=, x3/=, y3/=, x4/=, y4/=, color=
+```
+
 Examples:
 
 ```ruby
@@ -129,6 +158,12 @@ Parameters:
 x1, y1, x2, y2, x3, y3, color="white", visible=true
 ```
 
+Instance methods:
+
+```
+x1/=, y1/=, x2/=, y2/=, x3/=, y3/=, color=
+```
+
 Examples:
 
 ```ruby
@@ -141,11 +176,284 @@ t.color = "red"
 t.color = [0, 0, 255, 1]
 ```
 
+<!--
+### Lines
+
+Parameters:
+
+```
+x1, y1, x2, y2, color="white", visible=true
+```
+
+Examples:
+
+```ruby
+l = Line.new(x1, y1, x2, y2, w)
+l = Line.new(x1, y1, x2, y2, w, color, false)
+
+l.x1 = 10
+l.y1 = 20
+
+l.color = "red"
+l.color = [0, 0, 255, 1]
+```
+-->
+
+<!--
+## Gradients
+
+### Parameters
+
+All gradient methods take a Hash where keys refer to the corners of the shape, and values represent the color.
+
+```ruby
+{ :corner => color }
+```
+
+`:corner` is specific to each shape (described below). `color` is either a string...
+
+```ruby
+"red", "blue", "yellow", etc
+```
+...or an array containing red, green, blue, alpha values from 0 to 255:
+
+```ruby
+[r, g, b, a]
+
+# examples
+[255, 0, 0, 255]
+[100, 100, 200, 150]
+```
+
+### Squares and Rectangles
+
+`:corners` can be these groupings:
+
+```ruby
+# vertical
+:top, :bottom
+
+# horizontal
+:left, :right
+
+# all corners
+:top_left, :top_right, :bottom_left, :bottom_right
+```
+
+Examples:
+
+```ruby
+r.gradient = {
+  top: "red",
+  bottom: "blue"
+}
+
+r.gradient({
+  left: [255, 200, 150, 50],
+  right: "blue"
+}
+
+r.gradient = {
+  top_left: "red",
+  top_right: "blue",
+  bottom_left: "green",
+  bottom_right: "yellow"
+}
+```
+
+### Quadrilaterals
+
+```ruby
+:first, :second, :third, :fourth
+```
+
+Examples:
+
+```ruby
+q.gradient = {
+  first: "red",
+  second: "blue",
+  third: [0, 200, 255, 255],
+  fourth: "yellow"
+}
+```
+
+### Triangles
+
+The triangle gradient method takes a Hash containing keys (symbols) referring to the first, second, and third points of the triangle.
+
+`:corners` are:
+
+```ruby
+:first, :second, :third
+```
+
+Examples:
+
+```ruby
+t.gradient = {
+  first: "red",
+  second: "blue",
+  third: [0, 200, 255, 255]
+}
+```
+
+### Lines
+
+The line gradient method takes a Hash containing keys (symbols) referring to the start and ends.
+
+`:corners` are:
+
+```ruby
+:start, :end
+```
+
+Examples:
+
+```ruby
+l.gradient = {
+  start: "red",
+  end: "blue",
+}
+```
+-->
+
+## Images
+
+Formats supported: BMP, PNG, JPG.
+
+Parameters:
+
+```
+x, y, "path_to_image", visible=true
+```
+
+Instance methods:
+
+```
+x, y, width/=, height/=
+```
+
+Examples:
+
+```ruby
+img = Image.new(x, y, "ruby.png")
+img = Image.new(x, y, "media/ruby.png", false)
+
+img.x = 10
+img.y = 20
+img.width = 125
+img.height  # returns height
+```
+
+## Text
+
+Parameters:
+
+```
+x, y, h, "content", c="white", visible=true
+```
+
+Instance methods:
+
+```
+x/=, y/=, content=, color=
+```
+
+Examples:
+
+```ruby
+t = Text.new(x, y, 20, "hello world")
+t = Text.new(x, y, 20, "hello world", "blue", false)
+
+t.x = 10
+t.y = 20
+```
+-->
+
+<!--
+# Playing Audio
+
+Formats include: MP3, AAC, WAV.
+
+## Songs
+
+These are long audio clips.
+
+Parameters:
+
+```
+"path_to_song", volume=10
+```
+
+Instance methods:
+
+```
+play, playing?, pause, paused?, stop, loop
+```
+
+Examples:
+
+```ruby
+s = Song.new("media/track.mp3")
+s = Song.new("media/track.mp3", 5)
+
+s.play
+s.playing?  # returns `true`
+
+s.pause
+s.paused?   # returns `true`
+
+s.stop
+s.loop
+```
+
+## Sounds
+
+Sounds are short audio clips kept in memory.
+
+Parameters:
+
+```
+"path_to_sound", volume=10
+```
+
+Instance methods:
+
+```
+play, playing?, pause, paused?, stop, loop
+```
+
+Examples:
+
+```ruby
+s = Sound.new("media/snare.mp3")
+s = Sound.new("media/snare.mp3", 5)
+
+s.play
+s.playing?  # returns `true`
+
+s.pause
+s.paused?   # returns `true`
+
+s.stop
+s.loop
+```
+-->
+
 # Capturing Input
 
 ## Keyboard and Mouse Buttons
 
-Do something one time when a key is pressed.
+To capture a single key press where `<key_string>` is any valid keyboard character `a..z`, `A..Z`, `0..9`, and string representing arrows, alt, control, shift, etc:
+
+```ruby
+on_key <key_string> do
+  #...
+end
+```
+
+Example:
 
 ```ruby
 on_key 'a' do
@@ -154,6 +462,14 @@ end
 ```
 
 Do something repeatedly as a key is held down.
+
+```ruby
+key_down <key_string> do
+  #...
+end
+```
+
+Example:
 
 ```ruby
 key_down 's' do
@@ -186,7 +502,7 @@ Valid character strings:
 
 ## Cursor Position
 
-Use these helper methods to get the position of the cursor.
+Use these helper methods to get the position of the cursor. Mouse positions are relative to the top left corner of the window.
 
 ```ruby
          # Returns the mouse:
@@ -237,262 +553,12 @@ update do
 end
 ```
 
-
-
-
-
-
-
-
-
-<!--
-
-## Images
-
-TODO: Img formats supported?
-
-## Lines
-
-```ruby
-l = Line.new(x1, y1, x2, y2, c)
-
-l.x1 = 10
-l.y1 = 10
-l.color = "yellow"
-```
-
-# Images
-
-```ruby
-img = Image.new(x, y, img_path)
-
-img.x = 10
-img.y = 20
-```
-
-# Gradients
-
-## Parameters
-
-All gradient methods take a Hash where keys refer to the corners of the shape, and values represent the color.
-
-```ruby
-{ :corner => color }
-```
-
-`:corner` is specific to each shape (described below). `color` is either a string...
-
-```ruby
-"red", "blue", "yellow", etc
-```
-...or an array containing red, green, blue, alpha values from 0 to 255:
-
-```ruby
-[r, g, b, a]
-
-# examples
-[255, 0, 0, 255]
-[100, 100, 200, 150]
-```
-
-## Squares and Rectangles
-
-`:corners` can be these groupings:
-
-```ruby
-# vertical
-:top, :bottom
-
-# horizontal
-:left, :right
-
-# all corners
-:top_left, :top_right, :bottom_left, :bottom_right
-```
-
-### Examples
-
-```ruby
-r = Rectangle.new(x, y, w, h)
-
-r.gradient = {
-  :top => "red",
-  :bottom => "blue"
-}
-
-r.gradient({
-  :left => [255, 200, 150, 50],
-  :right => "blue"
-}
-
-r.gradient = {
-  :top_left => "red",
-  :top_right => "blue",
-  :bottom_left => "green",
-  :bottom_right => "yellow"
-}
-```
-
-## Triangles
-
-The triangle gradient method takes a Hash containing keys (symbols) referring to the first, second, and third points of the triangle.
-
-`:corners` are:
-
-```ruby
-:first, :second, :third
-```
-
-### Examples
-
-```ruby
-t = Triangle.new(x1, y1, x2, y2, x3, y3)
-
-t.gradient = {
-  :first => "red",
-  :second => "blue",
-  :third => [0, 200, 255, 255]
-}
-```
-
-## Lines
-
-The line gradient method takes a Hash containing keys (symbols) referring to the start and ends.
-
-`:corners` are:
-
-```ruby
-:start, :end
-```
-
-### Examples
-
-```ruby
-l = Line.new(x1, y1, x2, y2)
-
-l.gradient = {
-  :start => "red",
-  :end => "blue",
-}
-```
-
-# Audio
-
-## Songs
-
-These are long audio clips. (More soon.)
-
-```ruby
-s = Song.new("track.mp3")
-s.play
-s.playing?  # true
-s.pause
-s.paused?   # true
-s.stop
-s.loop
-```
-
-## Sounds
-
-Sounds are short audio clips. (More soon.)
-
-```ruby
-s = Sound.new("snare.mp3")
-s.play
-```
-
-## Capturing Input
-
-To capture a single key press where `<key_string>` is any valid keyboard character `a..z`, `A..Z`, `0..9`, and string representing arrows, alt, control, shift, etc:
-
-```ruby
-on_key <key_string> do
-  #...
-end
-```
-
-### Examples
-
-```ruby
-on_key 'm' do
-  puts "You pressed 'm'"
-end
-
-on_key 'up' do
-  puts "Up arrow pressed"
-end
-
-on_key 'space' do
-  puts "Spacebar pressed"
-end
-```
-
-### Mouse Buttons
-
-Mouse input can also be captured using the `'mouse_left'` and `'mouse_right'` strings.
-
-```ruby
-on_key 'mouse_right' do
-  puts "Mouse clicked in the window"
-end
-```
-
-## Keys Pressed Down
-
-To detect whether a key is held down, use either...
-
-```ruby
-key_down <key_string> do
-  #...
-end
-```
-
-or `Window.update`:
-
+Examples:
 
 ```ruby
 update do
   if key_down? <key_string>
-    #...
+    # do something
   end
 end
 ```
-
-### Examples
-
-The two examples below are equivalent and both execute in the main update loop.
-
-```ruby
-key_down 'x' do
-  puts "'x' pressed at #{Time.now}"
-end
-```
-
-```ruby
-update do
-  if key_down? 'x'
-    puts "'x' pressed at #{Time.now}"
-  end
-end
-```
-
-## The Update Loop
-
-The `R2D::Window.update` block represents the main update loop. Anything in this block will update 60 times per second (by default):
-
-```ruby
-update do
-  #...
-end
-```
-
-## Mouse Positions
-
-Mouse positions are relative to the top left corner of the window.
-
-```ruby
-mouse_x  # current 'x' position
-mouse_y  # current 'y' position
-```
-
--->
