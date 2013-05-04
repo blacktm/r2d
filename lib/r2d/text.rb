@@ -2,25 +2,38 @@
 
 class Text
   
-  attr_accessor :x1, :y1, :text
-  attr_reader :color
-
-  def initialize(x1, y1, text, c="white")
-    @x1, @y1 = x1, y1
-    @text, @color = text, c
+  attr_accessor :x, :y
+  attr_reader :h, :content, :color, :c
+  
+  def initialize(x, y, h, content, c="white", visible=true)
+    @x, @y, @h, @content, @color = x, y, h, content, c
     update_color(c)
+    @text = R2D::Window.text(h)
+    if visible then add end
   end
-
+  
   def color=(c)
-    update_color(c)
     @color = c
+    update_color(c)
   end
-
+  
+  def add
+    R2D::Window.add(self)
+  end
+  
+  def remove
+    R2D::Window.remove(self)
+  end
+  
+  def adapter
+    @text
+  end
+  
   private
-
+  
   def update_color(c)
-    r, g, b, a = Color.rgba(c)
-    @c1 = Window.get_color(r, g, b, a)
+    r, g, b, a = R2D::Color.rgba(c)
+    @c = R2D::Window.get_color(r, g, b, a)
   end
-
+  
 end
