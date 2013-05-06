@@ -1,6 +1,6 @@
-# R2D: A Ruby 2D Graphics Interface
+# R2D: 2D Graphics for Ruby
 
-R2D is a graphics interface for drawing 2D graphics, animations, playing audio, capturing input, and more.
+R2D is a gem for drawing 2D graphics, animations, playing audio, capturing input, and more.
 
 # Contributing
 
@@ -199,7 +199,6 @@ l.color = [0, 0, 255, 1]
 ```
 -->
 
-<!--
 ## Gradients
 
 ### Parameters
@@ -215,14 +214,14 @@ All gradient methods take a Hash where keys refer to the corners of the shape, a
 ```ruby
 "red", "blue", "yellow", etc
 ```
-...or an array containing red, green, blue, alpha values from 0 to 255:
+...or an array containing red, green, blue, alpha values from 0 to 255 (`Integer`) or 0.0 to 1.0 (`Float`):
 
 ```ruby
 [r, g, b, a]
 
 # examples
 [255, 0, 0, 255]
-[100, 100, 200, 150]
+[1.0, 1.0, 0.8, 0.5]
 ```
 
 ### Squares and Rectangles
@@ -298,6 +297,7 @@ t.gradient = {
 }
 ```
 
+<!--
 ### Lines
 
 The line gradient method takes a Hash containing keys (symbols) referring to the start and ends.
@@ -370,7 +370,6 @@ t.x = 10
 t.y = 20
 ```
 
-<!--
 # Playing Audio
 
 Formats include: MP3, AAC, WAV.
@@ -407,6 +406,7 @@ s.stop
 s.loop
 ```
 
+<!--
 ## Sounds
 
 Sounds are short audio clips kept in memory.
