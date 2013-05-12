@@ -8,7 +8,7 @@ class Image
   def initialize(x, y, path, visible=true)
     @x, @y, @path = x, y, path
     @f_x, @f_y = 1, 1
-    @image = R2D::Window.image(path)
+    @image = R2D::Adapters.image(path)
     @o_w, @o_h = @image.width, @image.height
     @width, @height = @o_w, @o_h
     if visible then add end

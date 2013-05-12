@@ -3,7 +3,7 @@
 class Sound
   
   def initialize(path)
-    @sound = R2D::Window.sound(path)
+    @sound = R2D::Adapters.sound(path)
   end
   
   def play

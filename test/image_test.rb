@@ -5,7 +5,7 @@ require 'r2d/image'
 
 describe Image do
   before do
-    R2D::Window.create width: 640, height: 480
+    window width: 640, height: 480
   end
 
   it 'has x and y coordinates' do

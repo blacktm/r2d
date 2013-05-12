@@ -1,6 +1,7 @@
 # r2d.rb
 
 require 'r2d/version'
+require 'r2d/adapters'
 require 'r2d/adapters/gosu'
 require 'r2d/window'
 require 'r2d/color'

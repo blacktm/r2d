@@ -1,41 +1,45 @@
 # helpers.rb
 
 module R2D
-  module Helpers    
+  module Helpers
+    
     def mouse_x
-      Window.mouse_x
+      Adapters.mouse_x
     end
     
     def mouse_y
-      Window.mouse_y
+      Adapters.mouse_y
     end
     
     def on_key(key, &block)
-      Window.on_key(key, &block)
+      @current.on_key(key, block)
     end
     
     def key_down?(key)
-      Window.key_down?(key)
+      @current.key_down?(key)
     end
     
     def key_down(key, &block)
-      Window.key_down(key, &block)
+      @current.add_key_down(key, block)
     end
     
     def update(&block)
-      Window.update(&block)
+      @current.update(block)
     end
     
     def window(opts={})
-      if opts == :show
-        Window.show
-      elsif opts == :clear
-        Window.clear
+      case opts
+      when :show
+        @current.show
+      when :clear
+        @current.clear
       else
-        Window.create(width: opts[:width],
-                      height: opts[:height],
-                      background: opts[:background],
-                      fullscreen: opts[:fullscreen])
+        @current = Window.new(
+          w: opts[:width] || 640,
+          h: opts[:height] || 480,
+          bg: opts[:background],
+          fs: opts[:fullscreen] || false
+        )
       end
     end
   end

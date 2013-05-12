@@ -28,10 +28,16 @@ task :build do
   `gem build r2d.gemspec`
   
   puts "Installing gem...".task
-  `gem install r2d-0.0.0.gem`
+  `gem install --local r2d-0.0.0.gem`
   
   puts "Done!".success, ""
   
 end
 
-task :default => :build
+desc "Test and Build"
+task :all do
+  Rake::Task["test"].execute
+  Rake::Task["build"].execute
+end
+
+task :default => :all

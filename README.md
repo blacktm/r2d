@@ -14,7 +14,7 @@ Until a v0.1.0 release, this gem will only be available locally. To build and in
 
 ```
 $ gem build r2d.gemspec
-$ gem install r2d-0.0.0.gem
+$ gem install --local r2d-0.0.0.gem
 ```
 
 # A Simple R2D Application

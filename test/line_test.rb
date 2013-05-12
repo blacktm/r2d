@@ -5,7 +5,7 @@ require 'r2d'
 
 describe Line do
   before do
-    R2D::Window.create width: 640, height: 480
+    window width: 640, height: 480
     @line = Line.new(20, 25, 100, 150, 10)
   end
 

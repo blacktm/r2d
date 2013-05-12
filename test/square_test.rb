@@ -3,7 +3,7 @@ require 'r2d'
 
 describe Square do
   before do
-    R2D::Window.create width: 640, height: 480
+    window width: 640, height: 480
     @square = Square.new(10, 20, 200)
   end
 

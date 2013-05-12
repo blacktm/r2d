@@ -3,7 +3,7 @@
 class Square < Rectangle
   
   attr_reader :size
-
+  
   def initialize(x, y, s, c="white", visible=true)
     @x, @y, @color = x, y, c
     @width = @height = @size = s
@@ -11,10 +11,10 @@ class Square < Rectangle
     update_color(c)
     if visible then add end
   end
-
+  
   def size=(s)
     self.width = self.height = @size = s
   end
-
+  
   private :width=, :height=
 end

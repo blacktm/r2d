@@ -3,7 +3,7 @@ require 'r2d'
 
 describe Rectangle do
   before do
-    R2D::Window.create width: 640, height: 480
+    window width: 640, height: 480
     @rectangle = Rectangle.new(10, 20, 300, 500)
   end
 

@@ -3,14 +3,14 @@
 class Song
   
   def initialize(path)
-    @song = R2D::Window.song(path)
+    @song = R2D::Adapters.song(path)
   end
   
   def play
     @song.play
   end
   
-  def play_loop
+  def loop
     @song.play(true)
   end
   

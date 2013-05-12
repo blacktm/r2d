@@ -8,7 +8,7 @@ class Text
   def initialize(x, y, h, content, c="white", visible=true)
     @x, @y, @h, @content, @color = x, y, h, content, c
     update_color(c)
-    @text = R2D::Window.text(h)
+    @text = R2D::Adapters.text(h)
     if visible then add end
   end
   
@@ -32,8 +32,7 @@ class Text
   private
   
   def update_color(c)
-    r, g, b, a = R2D::Color.rgba(c)
-    @c = R2D::Window.get_color(r, g, b, a)
+    @c = R2D::Color.new(c)
   end
   
 end

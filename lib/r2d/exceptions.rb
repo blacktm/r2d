@@ -1,7 +1,7 @@
 # exceptions.rb
 
 module R2D
-  class R2DError < StandardError
+  class Error < StandardError
     def initialize(msg)
       super(msg)
       # puts msg

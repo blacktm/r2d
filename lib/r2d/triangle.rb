@@ -32,10 +32,9 @@ class Triangle
   private
   
   def update_color(c)
-    r, g, b, a = R2D::Color.rgba(c)
-    @c1 = R2D::Window.get_color(r, g, b, a)
-    @c2 = R2D::Window.get_color(r, g, b, a)
-    @c3 = R2D::Window.get_color(r, g, b, a)
+    @c1 = R2D::Color.new(c)
+    @c2 = R2D::Color.new(c)
+    @c3 = R2D::Color.new(c)
   end
   
 end
