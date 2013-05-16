@@ -51,29 +51,27 @@ module R2D
     
     def add_on_key(key, proc)
       @on_keys[Adapters.key_lookup(key)] = proc
+      true
     end
     
     def key_down?(key)
       button_down?(Adapters.key_lookup(key))
+      true
     end
     
     def add_key_down(key, proc)
       @keys_down[Adapters.key_lookup(key)] = proc
+      true
     end
     
     def update(block)
       @update_proc = block
+      true
     end
     
     def on_key(key, block)
-      # begin
-        add_on_key(key, block)
-      # rescue InvalidKeyError => e
-      # rescue Exception => e
-      #   puts e.message
-      #   puts "Occurred in:"
-      #   puts "  " + e.backtrace.last, "\n"
-      # end
+      add_on_key(key, block)
+      true
     end
     
     def mouse_x

@@ -1,4 +1,5 @@
 require 'minitest/autorun'
+
 require 'r2d'
 
 describe Rectangle do
