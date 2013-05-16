@@ -1,0 +1,33 @@
+#!/usr/bin/env ruby
+
+require 'r2d'
+
+case ARGV[0]
+when 'console'
+  
+  require 'io/wait'
+  require 'open3'
+  require 'readline'
+  
+  stdin, stdout, stderr, wait_thr = Open3.popen3("ruby #{__dir__}/../lib/console.rb")
+  
+  loop do
+    str = Readline.readline(">> ", true)
+    
+    if str == "exit"
+      Process.kill 'INT', wait_thr.pid
+      wait_thr.value
+      exit
+    else
+      stdin.puts str
+    end
+    
+    puts stdout.gets
+    while stdout.ready? do
+      puts stdout.gets
+    end
+    
+  end
+else
+  puts "`r2d console` is the only available command"
+end

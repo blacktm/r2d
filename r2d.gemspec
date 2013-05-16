@@ -14,4 +14,5 @@ Gem::Specification.new do |s|
   s.files       = Dir.glob('lib/**/*')
   s.add_dependency 'gosu', '~> 0.7.47.1'
   s.required_ruby_version = '>= 2.0.0'
+  s.executables << 'r2d'
 end
