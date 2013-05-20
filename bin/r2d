@@ -9,7 +9,9 @@ when 'console'
   require 'open3'
   require 'readline'
   
-  stdin, stdout, stderr, wait_thr = Open3.popen3("ruby #{__dir__}/../lib/console.rb")
+  path = __dir__.sub(' ', '\ ') << "/../lib/console.rb"
+  
+  stdin, stdout, stderr, wait_thr = Open3.popen3("ruby #{path}")
   
   loop do
     str = Readline.readline(">> ", true)
