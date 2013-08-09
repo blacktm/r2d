@@ -1,7 +1,9 @@
 require 'r2d'
 
-window width: 640, height: 480
+window = R2D::Window.new
 
-q = Quad.new(10, 10, 40, 100, 300, 150, 400, 50, "green")
+q = R2D::Quad.new(10, 10, 40, 100, 300, 150, 400, 50, "green")
 
-window :show
+window.add(q)
+
+window.show

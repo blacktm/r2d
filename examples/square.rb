@@ -1,49 +1,51 @@
 require 'r2d'
 
-window width: 640, height: 480
+window = R2D::Window.new
 
-s1 = Square.new(0, 0, 100, "green")
-s2 = Square.new(100, 100, 100, [30, 100, 200, 255])
+s1 = R2D::Square.new(0, 0, 100, "green")
+s2 = R2D::Square.new(100, 100, 100, [30, 100, 200, 255])
 
-on_key 'r' do
-  puts s1.remove
+window.add([s1, s2])
+
+window.on_key 'r' do
+  puts window.remove(s1)
 end
 
-on_key 'a' do
-  puts s1.add
+window.on_key 'a' do
+  puts window.add(s1)
 end
 
-key_down 'l' do
+window.key_down 'l' do
   s1.size += 10
 end
 
-key_down 's' do
+window.key_down 's' do
   s1.size -= 10
 end
 
 px = 5
 
-key_down 'left' do
+window.key_down 'left' do
   s2.x -= px
 end
 
-key_down 'right' do
+window.key_down 'right' do
   s2.x += px
 end
 
-key_down 'up' do
+window.key_down 'up' do
   s2.y -= px
 end
 
-key_down 'down' do
+window.key_down 'down' do
   s2.y += px
 end
 
 
-update do
-  s1.x = mouse_x
-  s1.y = mouse_y
+window.update do
+  s1.x = window.mouse_x
+  s1.y = window.mouse_y
 end
 
 
-window :show
+window.show

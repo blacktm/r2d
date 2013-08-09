@@ -1,7 +1,9 @@
 require 'r2d'
 
-window width: 640, height: 480
+window = R2D::Window.new
 
-r = Rectangle.new(0, 0, 100, 100, "blue")
+r = R2D::Rectangle.new(0, 0, 100, 100, "blue")
 
-window :show
+window.add(r)
+
+window.show

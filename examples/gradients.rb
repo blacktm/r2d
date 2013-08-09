@@ -1,13 +1,15 @@
 require 'r2d'
 
-window width: 640, height: 480
+window = R2D::Window.new
 
-s1 = Square.new(10, 10, 100)
-s2 = Square.new(10, 120, 100)
+s1 = R2D::Square.new(10, 10, 100)
+s2 = R2D::Square.new(10, 120, 100)
+
+window.add([s1, s2])
 
 s1.gradient = {
   top: "red",
   bottom: "blue"
 }
 
-window :show
+window.show

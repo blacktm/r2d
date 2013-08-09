@@ -1,26 +1,28 @@
 require 'r2d'
 
-window width: 640, height: 480
+window = R2D::Window.new
 
-l1 = Line.new(100, 100, 300, 100, 25, "red")
-l2 = Line.new(100, 100, 300, 100, 2, "green")
+l1 = R2D::Line.new(100, 100, 300, 100, 25, "red")
+l2 = R2D::Line.new(100, 100, 300, 100, 2, "green")
 
-key_down 'a' do
+window.add([l1, l2])
+
+window.key_down 'a' do
   l2.w += 1
 end
 
-key_down 's' do
+window.key_down 's' do
   l2.w -= 1
 end
 
-key_down 'd' do
-  l2.x1 = mouse_x
-  l2.y1 = mouse_y
+window.key_down 'd' do
+  l2.x1 = window.mouse_x
+  l2.y1 = window.mouse_y
 end
 
-key_down 'f' do
-  l2.x2 = mouse_x
-  l2.y2 = mouse_y
+window.key_down 'f' do
+  l2.x2 = window.mouse_x
+  l2.y2 = window.mouse_y
 end
 
-window :show
+window.show

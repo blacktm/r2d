@@ -1,12 +1,14 @@
 require 'r2d'
 
-window width: 640, height: 480
+window = R2D::Window.new
 
-img = Image.new(100, 100, 'media/gem.png')
+img = R2D::Image.new(100, 100, 'media/gem.png')
+
+window.add(img)
 
 pos = true
 
-key_down 'h' do
+window.key_down 'h' do
   if pos
     img.height += 1
   else
@@ -14,7 +16,7 @@ key_down 'h' do
   end
 end
 
-key_down 'w' do
+window.key_down 'w' do
   if pos
     img.width += 1
   else
@@ -22,13 +24,12 @@ key_down 'w' do
   end
 end
 
-on_key 's' do
+window.on_key 's' do
   puts "width: " + img.width.to_s
   puts "height: " + img.height.to_s
 end
 
-
-on_key 'space' do
+window.on_key 'space' do
   if pos
     pos = false
   else
@@ -36,4 +37,4 @@ on_key 'space' do
   end
 end
 
-window :show
+window.show
