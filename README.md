@@ -1,44 +1,66 @@
+
+<!--
+  
+  TODO:
+   - Add `include R2D::Helpers` ?
+   - Explain how coordinates are numbered, clockwise?
+   
+-->
+
 # R2D: 2D Graphics for Ruby
 
-R2D is a gem for drawing 2D graphics, animations, playing audio, capturing input, and more.
+R2D is a gem for drawing 2D graphics, animations, playing audio, capturing input, and more. It aims to be a simple and lightweight programmable graphics engine suitable for casual 2D games, visualizations, education, and more.
 
-# Contributing
+**WARNING: This gem does not (yet) work!** It's still in very early development and the API and implementation are in flux. I'm openly sharing the source and development process for make benefit of human race, and will (probably) not accept contributions at this time. So there.
 
-This library is in **very early development**, which means the design direction, implementation, and final API spec is still in flux. Please [contact me](https://twitter.com/blacktm) or open an issue *before* sending a pull request.
-
-[View the Roadmap](https://github.com/blacktm/r2d/wiki/Roadmap) in the wiki.
+If you want to share ideas, ask questions, or discuss anything in general, check out the [Google group](https://groups.google.com/d/forum/r2d-gem). Contact me at [@blacktm](https://twitter.com/blacktm). View the [roadmap](https://github.com/blacktm/r2d/wiki/Roadmap) in the wiki.
 
 # Installing
 
-Until a v0.1.0 release, this gem will only be available locally. To build and install the gem, use:
+Until a public release, this gem will only be available locally. Build and install using:
 
 ```
 $ gem build r2d.gemspec
-$ gem install --local r2d-0.0.0.gem
+$ gem install r2d-0.0.0.gem --local
 ```
+
+# Running the Examples
+
+The [`examples/`](/examples) directory contains a wide variety of sample R2D applications. They should all be consistent with the API spec below, but remember, _**the full API has not yet been implemented!**_ I'm using the examples to test the gem while implementing the engine and API, so I already know what is broken. Don't go opening issues on broken examples, at least for now.
+
+# Requirements and OS Support
+
+R2D requires Ruby 2.0 and greater. Native extensions are used in this gem, so a compiler is needed. The intension of R2D is to be a fully cross-platform graphics environment. The gem has so far been tested on OS X 10.8.4 and Windows 7 32-bit using the [RubyInstaller](http://rubyinstaller.org/) for Windows and the [MinGW DevKit](http://rubyinstaller.org/add-ons/devkit/) (needed for building native extensions). If you've tested R2D with other operating systems and configurations, please [let me know](https://twitter.com/blacktm) and open issues accordingly.
+
+---
+
+## Proposed API Spec (not yet fully implemented)
+
+---
 
 # A Simple R2D Application
 
 ```ruby
 require 'r2d'
 
-# Configure and initialize the window
-window width: 640, height: 480
+# Create a new window instance
+window = R2D::Window.new
 
-# Create a shape and add it to the window
-r = Rectangle.new(0, 0, 100, 100, "blue")
+# Create a new shape
+r = R2D::Rectangle.new(0, 0, 100, 100, "blue")
+
+# Add the shape to the window
+window.add(r)
 
 # Show the window
-window :show
+window.show
 ```
 
-Read the reference below to learn about all the things you can do with R2D. See the [examples](/examples) directory for more sample applications.
+Read the reference below to learn about all the things you can do with R2D. Instance methods with `method/=` means both `method` and `method=` are available to get and set attributes. See the [`examples/`](/examples) directory for sample applications.
 
-<!-- TODO: Add note about what `method/=` means -->
+# Drawing
 
-# Basic Drawing
-
-## Common Parameters
+R2D supports a number of basic graphics primitives like triangles, squares, and rectanges. Every object that can be drawn has a set of **common parameters**:
 
 ```
 x = an 'x'  coordinate (Integer)
@@ -50,24 +72,24 @@ h = the height  (Integer)
 c = the color  (String)
 or...
 c = [r, g, b, a] (Array)
-  where elements are 0..255 (Integer) or 0.0..1.0 (Float)
+  where values are 0 or 1 (Integer) or 0.0..1.0 (Float)
     r = red
     g = green
     b = blue
     a = alpha
 ```
 
-## Common Instance Methods
+Objects also have **common instance methods**:
 
-All objects that can be drawn have the methods:
-
+```ruby
+# Toggle the visibility of the object
+object.hide
+object.show
 ```
-add, remove, show, hide
-```
-
-`add` and `show`, along with `remove` and `hide` are aliased.
 
 ## Shapes
+
+<!-- TODO: Provide a description of what shapes are in R2D -->
 
 ### Squares
 
@@ -80,20 +102,20 @@ x, y, size, color="white", visible=true
 Instance methods:
 
 ```
-x/=, y/=, size=, color=
+x/=, y/=, size/=, color/=
 ```
 
 Examples:
 
 ```ruby
-s = Square.new(x, y, size)
-s = Square.new(x, y, size, color, false)
+s = R2D::Square.new(x, y, size)
+s = R2D::Square.new(x, y, size, color, false)
 
 s.x = 10
 s.y = 20
 s.size = 25
 s.color = "red"
-s.color = [250, 0, 0, 100]
+s.color = [1, 0, 0, 0.2]
 ```
 
 ### Rectangles
@@ -107,21 +129,21 @@ x, y, width, height, color="white", visible=true
 Instance methods:
 
 ```
-x/=, y/=, width/=, height/=, color=
+x/=, y/=, width/=, height/=, color/=
 ```
 
 Examples:
 
 ```ruby
-r = Rectangle.new(x, y, width, height)
-r = Rectangle.new(x, y, width, height, color, false)
+r = R2D::Rectangle.new(x, y, width, height)
+r = R2D::Rectangle.new(x, y, width, height, color, false)
 
 r.x = 10
 r.y = 20
 r.width = 200
 r.height = 50
 r.color = "blue"
-r.color = [0, 0, 255, 150]
+r.color = [0, 0, 1, 0.5]
 ```
 
 ### Quadrilaterals
@@ -135,19 +157,19 @@ x1, y1, x2, y2, x3, y3, x4, y4, color="white", visible=true
 Instance methods:
 
 ```
-x1/=, y1/=, x2/=, y2/=, x3/=, y3/=, x4/=, y4/=, color=
+x1/=, y1/=, x2/=, y2/=, x3/=, y3/=, x4/=, y4/=, color/=
 ```
 
 Examples:
 
 ```ruby
-q = Quad.new(x1, y1, x2, y2, x3, y3, x4, y4)
-q = Quad.new(x1, y1, x2, y2, x3, y3, x4, y4, color, false)
+q = R2D::Quad.new(x1, y1, x2, y2, x3, y3, x4, y4)
+q = R2D::Quad.new(x1, y1, x2, y2, x3, y3, x4, y4, color, false)
 
 q.x1 = 10
 q.y1 = 20
 q.color = "blue"
-q.color = [0, 0, 255, 150]
+q.color = [0, 0, 1, 0.5]
 ```
 
 ### Triangles
@@ -161,22 +183,21 @@ x1, y1, x2, y2, x3, y3, color="white", visible=true
 Instance methods:
 
 ```
-x1/=, y1/=, x2/=, y2/=, x3/=, y3/=, color=
+x1/=, y1/=, x2/=, y2/=, x3/=, y3/=, color/=
 ```
 
 Examples:
 
 ```ruby
-t = Triangle.new(x1, y1, x2, y2, x3, y3)
-t = Triangle.new(x1, y1, x2, y2, x3, y3, color, false)
+t = R2D::Triangle.new(x1, y1, x2, y2, x3, y3)
+t = R2D::Triangle.new(x1, y1, x2, y2, x3, y3, color, false)
 
 t.x1 = 10
 t.y1 = 20
 t.color = "red"
-t.color = [0, 0, 255, 1]
+t.color = [0, 0, 1, 1]
 ```
 
-<!--
 ### Lines
 
 Parameters:
@@ -188,22 +209,20 @@ x1, y1, x2, y2, color="white", visible=true
 Examples:
 
 ```ruby
-l = Line.new(x1, y1, x2, y2, w)
-l = Line.new(x1, y1, x2, y2, w, color, false)
+l = R2D::Line.new(x1, y1, x2, y2, w)
+l = R2D::Line.new(x1, y1, x2, y2, w, color, false)
 
 l.x1 = 10
 l.y1 = 20
-
 l.color = "red"
-l.color = [0, 0, 255, 1]
+l.color = [0, 0, 1, 1]
 ```
--->
 
 ## Gradients
 
 ### Parameters
 
-All gradient methods take a Hash where keys refer to the corners of the shape, and values represent the color.
+All gradient methods take a Hash where keys refer to the corners of the shape and values represent the color.
 
 ```ruby
 { :corner => color }
@@ -214,14 +233,13 @@ All gradient methods take a Hash where keys refer to the corners of the shape, a
 ```ruby
 "red", "blue", "yellow", etc
 ```
-...or an array containing red, green, blue, alpha values from 0 to 255 (`Integer`) or 0.0 to 1.0 (`Float`):
+...or an array containing red, green, blue, alpha values 0 or 1 (`Integer`) or 0.0..1.0 (`Float`):
 
 ```ruby
 [r, g, b, a]
 
 # examples
-[255, 0, 0, 255]
-[1.0, 1.0, 0.8, 0.5]
+[1, 0, 0.8, 0.5]
 ```
 
 ### Squares and Rectangles
@@ -248,7 +266,7 @@ r.gradient = {
 }
 
 r.gradient({
-  left: [255, 200, 150, 50],
+  left: [1, 0.8, 0.5, 0.2],
   right: "blue"
 }
 
@@ -262,6 +280,8 @@ r.gradient = {
 
 ### Quadrilaterals
 
+<!-- TODO: Are these clockwise? -->
+
 ```ruby
 :first, :second, :third, :fourth
 ```
@@ -272,7 +292,7 @@ Examples:
 q.gradient = {
   first: "red",
   second: "blue",
-  third: [0, 200, 255, 255],
+  third: [0, 0.8, 1, 1],
   fourth: "yellow"
 }
 ```
@@ -282,6 +302,8 @@ q.gradient = {
 The triangle gradient method takes a Hash containing keys (symbols) referring to the first, second, and third points of the triangle.
 
 `:corners` are:
+
+<!-- TODO: Are these clockwise? -->
 
 ```ruby
 :first, :second, :third
@@ -293,16 +315,17 @@ Examples:
 t.gradient = {
   first: "red",
   second: "blue",
-  third: [0, 200, 255, 255]
+  third: [0, 0.8, 1, 1]
 }
 ```
 
-<!--
 ### Lines
 
 The line gradient method takes a Hash containing keys (symbols) referring to the start and ends.
 
 `:corners` are:
+
+<!-- TODO: Explain :start == x1, y1 and so on -->
 
 ```ruby
 :start, :end
@@ -316,7 +339,6 @@ l.gradient = {
   end: "blue",
 }
 ```
--->
 
 ## Images
 
@@ -331,14 +353,14 @@ x, y, "path_to_image", visible=true
 Instance methods:
 
 ```
-x, y, width/=, height/=
+x/=, y/=, width/=, height/=
 ```
 
 Examples:
 
 ```ruby
-img = Image.new(x, y, "ruby.png")
-img = Image.new(x, y, "media/ruby.png", false)
+img = R2D::Image.new(x, y, "ruby.png")
+img = R2D::Image.new(x, y, "media/ruby.png", false)
 
 img.x = 10
 img.y = 20
@@ -357,14 +379,14 @@ x, y, h, "content", c="white", visible=true
 Instance methods:
 
 ```
-x/=, y/=, content=, color=
+x/=, y/=, content/=, color/=
 ```
 
 Examples:
 
 ```ruby
-t = Text.new(x, y, 20, "hello world")
-t = Text.new(x, y, 20, "hello world", "blue", false)
+t = R2D::Text.new(x, y, 20, "hello world")
+t = R2D::Text.new(x, y, 20, "hello world", "blue", false)
 
 t.x = 10
 t.y = 20
@@ -373,6 +395,8 @@ t.y = 20
 # Playing Audio
 
 Formats include: MP3, AAC, WAV.
+
+<!-- TODO: How does audio work? What C libraries are used. -->
 
 ## Songs
 
@@ -393,8 +417,8 @@ play, playing?, pause, paused?, stop, loop
 Examples:
 
 ```ruby
-s = Song.new("media/track.mp3")
-s = Song.new("media/track.mp3", 5)
+s = R2D::Song.new("media/track.mp3")
+s = R2D::Song.new("media/track.mp3", 5)
 
 s.play
 s.playing?  # returns `true`
@@ -403,10 +427,9 @@ s.pause
 s.paused?   # returns `true`
 
 s.stop
-s.loop
+s.play_loop
 ```
 
-<!--
 ## Sounds
 
 Sounds are short audio clips kept in memory.
@@ -426,8 +449,8 @@ play, playing?, pause, paused?, stop, loop
 Examples:
 
 ```ruby
-s = Sound.new("media/snare.mp3")
-s = Sound.new("media/snare.mp3", 5)
+s = R2D::Sound.new("media/snare.mp3")
+s = R2D::Sound.new("media/snare.mp3", 5)
 
 s.play
 s.playing?  # returns `true`
@@ -436,9 +459,8 @@ s.pause
 s.paused?   # returns `true`
 
 s.stop
-s.loop
+s.play_loop
 ```
--->
 
 # Capturing Input
 
@@ -446,8 +468,10 @@ s.loop
 
 To capture a single key press where `<key_string>` is any valid keyboard character `a..z`, `A..Z`, `0..9`, and string representing arrows, alt, control, shift, etc:
 
+In these examples, `window = R2D::Window.new`.
+
 ```ruby
-on_key <key_string> do
+window.on_key <key_string> do
   #...
 end
 ```
@@ -455,7 +479,7 @@ end
 Example:
 
 ```ruby
-on_key 'a' do
+window.on_key 'a' do
   # letter 'a' pressed
 end
 ```
@@ -463,7 +487,7 @@ end
 Do something repeatedly as a key is held down.
 
 ```ruby
-key_down <key_string> do
+window.key_down <key_string> do
   #...
 end
 ```
@@ -471,12 +495,12 @@ end
 Example:
 
 ```ruby
-key_down 's' do
+window.key_down 's' do
   # letter 's' held down
 end
 ```
 
-Valid character strings:
+Valid character strings are:
 
 ```
 ('a'..'z') || ('A'..'Z') || ('0'..'9')
@@ -501,17 +525,17 @@ Valid character strings:
 
 ## Cursor Position
 
-Use these helper methods to get the position of the cursor. Mouse positions are relative to the top left corner of the window.
+Use these methods to get the position of the cursor relative to the top, left corner of the window.
 
 ```ruby
          # Returns the mouse:
-mouse_x  #  x-coordinate
-mouse_y  #  y-coordinate
+window.mouse_x  #  x-coordinate
+window.mouse_y  #  y-coordinate
 ```
 
 # The Window
 
-R2D will create and manage a window instance for you. The `window` method is provided to send commands to the window instance.
+R2D will create and manage window instances for you. Windows are created using `window = R2D::Window.new`.
 
 ## Window Attributes
 
@@ -529,7 +553,7 @@ background: "white"  #  "black"
 Example:
 
 ```ruby
-window title: 'My App', width: 300, height: 200, cursor: false
+window = R2D::Window.new(title: "My App", width: 300, height: 200, cursor: false)
 ```
 
 ## Clearing the Window
@@ -537,17 +561,17 @@ window title: 'My App', width: 300, height: 200, cursor: false
 To remove all objects from the window, use:
 
 ```ruby
-window :clear
+window.clear
 ```
 
-Note this does not delete the objects themselves – the references remain intact. This is equivalent to calling `shape.remove`.
+Note this does not delete the objects themselves – references remain intact. This is equivalent to calling `window.remove(object)`.
 
 # The Update Loop
 
 Do something each time the graphic environment is updated (60 times / second).
 
 ```ruby
-update do
+window.update do
   # do something
 end
 ```
@@ -555,7 +579,7 @@ end
 Examples:
 
 ```ruby
-update do
+window.update do
   if key_down? <key_string>
     # do something
   end
