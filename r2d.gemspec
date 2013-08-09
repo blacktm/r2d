@@ -11,8 +11,9 @@ Gem::Specification.new do |s|
   s.description = 'A Ruby 2D graphics interface.'
   s.homepage    = 'https://github.com/blacktm/r2d'
   s.license     = 'MIT'
-  s.files       = Dir.glob('lib/**/*')
-  s.add_dependency 'gosu', '~> 0.7.47.1'
+  s.files       = Dir.glob('lib/**/*') +
+                  Dir.glob('ext/**/*.{a,c,dll,h,rb}')
   s.required_ruby_version = '>= 2.0.0'
-  s.executables << 'r2d'
+  s.executables          << 'r2d'
+  s.extensions            = ['ext/r2d/extconf.rb']
 end
