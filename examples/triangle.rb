@@ -2,23 +2,12 @@ require 'r2d'
 
 window = R2D::Window.new
 
-t = R2D::Triangle.new(100, 100, 300, 100, 300, 400, "red")
+t1 = R2D::Triangle.new(0, 0, 100, 100, 0, 200, "blue")
+t2 = R2D::Triangle.new(500, 500, 200, 500, 300, 300, [1, 1, 0, 1])
+t3 = R2D::Triangle.new(0, 0, 300, 300, 300, 500, [0, 1, 0, 0.5])
 
-window.add(t)
-
-window.key_down 'a' do
-  t.x1 = window.mouse_x
-  t.y1 = window.mouse_y
-end
-
-window.key_down 's' do
-  t.x2 = window.mouse_x
-  t.y2 = window.mouse_y
-end
-
-window.key_down 'd' do
-  t.x3 = window.mouse_x
-  t.y3 = window.mouse_y
-end
+window.add(t1)
+window.add(t2)
+window.add(t3)
 
 window.show
