@@ -2,9 +2,7 @@
 
 module R2D
   class Window
-    
     attr_accessor :w, :h, :title, :bg, :cursor, :fs
-    attr_reader :objects, :on_keys, :keys_down, :update_proc
     
     def initialize(w: 640, h: 480, title: "R2D", bg: nil, cursor: true, fs: false)
       @w, @h, @title, @bg, @cursor, @fs, = w, h, title, bg, cursor, fs
@@ -14,17 +12,8 @@ module R2D
       @keys_down = {}
       @update_proc = Proc.new {}
       
-      Adapters.create(self, :gosu)
-      
-      @@current = self
-    end
-    
-    def self.add(o)
-      @@current.add(o)
-    end
-    
-    def self.remove(o)
-      @@current.remove(o)
+      # testing
+      @count = 0
     end
     
     def add(o)
@@ -49,42 +38,51 @@ module R2D
       @objects.clear
     end
     
-    def add_on_key(key, proc)
-      @on_keys[Adapters.key_lookup(key)] = proc
-      true
-    end
-    
-    def key_down?(key)
-      button_down?(Adapters.key_lookup(key))
-      true
-    end
-    
-    def add_key_down(key, proc)
-      @keys_down[Adapters.key_lookup(key)] = proc
-      true
-    end
-    
-    def update(block)
-      @update_proc = block
-      true
-    end
-    
-    def on_key(key, block)
-      add_on_key(key, block)
-      true
-    end
-    
-    def mouse_x
-      Adapters.mouse_x
-    end
-    
-    def mouse_y
-      Adapters.mouse_y
-    end
-    
-    def show
-      Adapters.show
+    def draw
+      puts @count
+      @count += 1
+      
+      @objects.each do |o|
+        case o
+        when Line
+        when Triangle
+          draw_triangle(
+            o.x1, o.y1, o.c1,
+            o.x2, o.y2, o.c2,
+            o.x3, o.y3, o.c3
+          )
+        when Quad
+          draw_triangle(
+            o.x1, o.y1, o.c1,
+            o.x2, o.y2, o.c2,
+            o.x3, o.y3, o.c3
+          )
+          draw_triangle(
+            o.x3, o.y3, o.c1,
+            o.x4, o.y4, o.c2,
+            o.x1, o.y1, o.c3
+          )
+        when Image
+          draw_image(o.x, o.y)
+        when Text
+          draw_text(o.x, o.y, o.c)
+        else
+          raise Error, "Cannot draw type '#{o.class}'"
+        end
+      end
     end
     
   end
 end
+
+
+
+
+
+
+
+
+
+
+
+
