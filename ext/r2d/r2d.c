@@ -20,42 +20,34 @@ static VALUE r2d_draw_triangle(VALUE self,
                                VALUE x1, VALUE y1, VALUE c1,
                                VALUE x2, VALUE y2, VALUE c2,
                                VALUE x3, VALUE y3, VALUE c3) {
+  
+  // printf("%s\n", "r2d_draw_triangle()");
+  
+  double c1r = NUM2DBL(rb_iv_get(c1, "@r"));
+  double c1g = NUM2DBL(rb_iv_get(c1, "@g"));
+  double c1b = NUM2DBL(rb_iv_get(c1, "@b"));
+  double c1a = NUM2DBL(rb_iv_get(c1, "@a"));
+  
+  double c2r = NUM2DBL(rb_iv_get(c2, "@r"));
+  double c2g = NUM2DBL(rb_iv_get(c2, "@g"));
+  double c2b = NUM2DBL(rb_iv_get(c2, "@b"));
+  double c2a = NUM2DBL(rb_iv_get(c2, "@a"));
+  
+  double c3r = NUM2DBL(rb_iv_get(c3, "@r"));
+  double c3g = NUM2DBL(rb_iv_get(c3, "@g"));
+  double c3b = NUM2DBL(rb_iv_get(c3, "@b"));
+  double c3a = NUM2DBL(rb_iv_get(c3, "@a"));
+  
   glBegin(GL_TRIANGLES);
   
-  printf("%s\n", "r2d_draw_triangle()");
-  glColor3f(1.f, 0.f, 0.f);
+  glColor4f(c1r, c1g, c1b, c1a);
   glVertex2f(NUM2DBL(x1), NUM2DBL(y1));
   
-  glColor3f(0.f, 1.f, 0.f);
+  glColor4f(c2r, c2g, c2b, c2a);
   glVertex2f(NUM2DBL(x2), NUM2DBL(y2));
   
-  glColor3f(0.f, 0.f, 1.f);
+  glColor4f(c3r, c3g, c3b, c3a);
   glVertex2f(NUM2DBL(x3), NUM2DBL(y3));
-  
-  glEnd();
-  
-  return self;
-}
-
-
-/*
- * Draw OpenGL quad
- */
-static VALUE r2d_draw_quad(VALUE self,
-                           VALUE x1, VALUE y1, VALUE c1,
-                           VALUE x2, VALUE y2, VALUE c2,
-                           VALUE x3, VALUE y3, VALUE c3,
-                           VALUE x4, VALUE y4, VALUE c4) {
-  glBegin(GL_TRIANGLES);
-  
-  glColor3f(1.f, 0.f, 0.f);
-  glVertex3f(-1.0f, -0.4f, 0.f);
-  
-  glColor3f(0.f, 1.f, 0.f);
-  glVertex3f(0.6f, -0.4f, 0.f);
-  
-  glColor3f(0.f, 0.f, 1.f);
-  glVertex3f(0.f, 0.6f, 0.f);
   
   glEnd();
   
@@ -160,6 +152,10 @@ static VALUE r2d_show(VALUE self) {
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     
+    // Enable transparency
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    
     // Call `window.draw`
     rb_funcall(self, rb_intern("draw"), 0);
     
@@ -185,7 +181,6 @@ void Init_r2d(void) {
   rb_define_method(r2d_window_klass, "demo", r2d_demo, 0);
   rb_define_method(r2d_window_klass, "show", r2d_show, 0);
   rb_define_method(r2d_window_klass, "draw_triangle", r2d_draw_triangle, 9);
-  rb_define_method(r2d_window_klass, "draw_quad", r2d_draw_quad, 12);
 }
 
 
