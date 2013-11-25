@@ -4,7 +4,7 @@ module R2D
   class Sound
     
     def initialize(path)
-      @sound = R2D::Adapters.sound(path)
+      @sound = nil
     end
     
     def play

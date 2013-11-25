@@ -11,7 +11,6 @@ module R2D
       @x1, @y1, @x2, @y2, @w, @color = x1, y1, x2, y2, w, c
       update_coords(x1, y1, x2, y2, w)
       update_color(c)
-      if visible then add end
     end
     
     def x1=(x1)

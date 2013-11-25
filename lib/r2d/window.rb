@@ -2,26 +2,23 @@
 
 module R2D
   class Window
-    attr_accessor :w, :h, :title, :bg, :cursor, :fs
+    attr_reader :width, :height, :title, :cursor_x, :cursor_y
     
-    def initialize(w: 640, h: 480, title: "R2D", bg: nil, cursor: true, fs: false)
-      @w, @h, @title, @bg, @cursor, @fs, = w, h, title, bg, cursor, fs
+    def initialize(width: 640, height: 480, title: "R2D")
+      @width, @height, @title = width, height, title
+      @cursor_x = @cursor_y = 0
       
       @objects = []
       @on_keys = {}
       @keys_down = {}
       @update_proc = Proc.new {}
-      
-      # testing
-      @count = 0
     end
     
     def add(o)
-      if !@objects.include?(o)
-        @objects.push(o)
-        true
+      if o.class == Array
+        o.each { |x| add_object(x) }
       else
-        false
+        add_object(o)
       end
     end
     
@@ -38,51 +35,38 @@ module R2D
       @objects.clear
     end
     
-    def draw
-      puts @count
-      @count += 1
-      
-      @objects.each do |o|
-        case o
-        when Line
-        when Triangle
-          draw_triangle(
-            o.x1, o.y1, o.c1,
-            o.x2, o.y2, o.c2,
-            o.x3, o.y3, o.c3
-          )
-        when Quad
-          draw_triangle(
-            o.x1, o.y1, o.c1,
-            o.x2, o.y2, o.c2,
-            o.x3, o.y3, o.c3
-          )
-          draw_triangle(
-            o.x3, o.y3, o.c1,
-            o.x4, o.y4, o.c2,
-            o.x1, o.y1, o.c3
-          )
-        when Image
-          draw_image(o.x, o.y)
-        when Text
-          draw_text(o.x, o.y, o.c)
-        else
-          raise Error, "Cannot draw type '#{o.class}'"
-        end
+    # Register key string with proc
+    def on_key(key, &proc)
+      @on_keys[key] = proc
+      true
+    end
+    
+    def key_callback(key)
+      key.downcase!
+      if @on_keys.has_key? key
+        @on_keys[key].call
+      end
+    end
+    
+    def update(&proc)
+      @update_proc = proc
+      true
+    end
+    
+    def update_callback
+      @update_proc.call
+    end
+    
+    private
+    
+    def add_object(o)
+      if !@objects.include?(o)
+        @objects.push(o)
+        true
+      else
+        false
       end
     end
     
   end
 end
-
-
-
-
-
-
-
-
-
-
-
-

@@ -1,9 +1,13 @@
 require 'r2d'
 
+# Create a new window instance
 window = R2D::Window.new
 
-r = R2D::Rectangle.new(0, 0, 100, 100, "blue")
+# Create a new shape
+s = R2D::Square.new(0, 0, 100, "red")
 
-window.add(r)
+# Add the shape to the window
+window.add(s)
 
+# Show the window
 window.show

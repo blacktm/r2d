@@ -5,7 +5,8 @@ module R2D
     
     attr_reader :x, :y, :width, :height
     
-    def initialize(x, y, w, h, c="white", visible=true)
+    def initialize(x, y, w, h, c="white")
+      @type_id = 2
       @x, @y, @width, @height, @color = x, y, w, h, c
       update_coords(x, y, w, h)
       update_color(c)
@@ -14,8 +15,8 @@ module R2D
     def x=(x)
       @x = @x1 = x
       @x2 = x + @width
-      @x3 = x
-      @x4 = x + @width
+      @x3 = x + @width
+      @x4 = x
     end
     
     def y=(y)

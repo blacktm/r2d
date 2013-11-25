@@ -2,8 +2,126 @@
 
 require 'r2d'
 
+class String
+  def colorize(c); "\e[#{c}m#{self}\e[0m" end
+  def error; colorize("1;31") end
+  def bold; colorize("1") end
+end
+
 case ARGV[0]
+when nil
+  puts %Q[
+#{"R2D: 2D Graphics for Ruby".bold}
+
+#{"COMMANDS:".bold}
+  package    Create an app bundle from an R2D application (OS X only).
+
+]
+  
+when 'new'
+  # TODO: Create R2D skeleton app structure
+  puts "This isn't ready yet, sorry!"
+  exit
+  
+when 'package'
+  # TODO: Offer other OS support?
+  
+  require 'fileutils'
+  
+  if ARGV[1] == nil
+    puts %Q[
+#{"Which folder would you like to appify?".bold}
+  
+  #{"Example:".bold}  $ r2d package MyApp
+
+]
+    exit
+  end
+  
+  # Remove all `/` to avoid sub-directory issues
+  app_name = ARGV[1].tr('/', '')
+  
+  # Check if folder containing the app exists
+  unless Dir.exists? app_name
+    puts "App directory `#{app_name}` not found.".error
+    exit
+  end
+  
+  # Check if `app.rb` is in the app dir
+  unless File.exists? "#{app_name}/app.rb"
+    puts "`app.rb` not found in directory #{app_name}".error
+    exit
+  end
+  
+  # Warning if `app.icns` not found in app dir
+  unless File.exists? "#{app_name}/app.icns"
+    puts "#{"Warning:".error} `app.icns` not found."
+  end
+  
+  # Check if app already exists
+  if Dir.exists? "#{app_name}.app"
+    puts "#{app_name}.app already exists.".error
+    exit
+  end
+  
+  FileUtils.mkpath "#{app_name}.app/Contents/MacOS"
+  FileUtils.mkpath "#{app_name}.app/Contents/Resources"
+  
+  info_plist = %Q[
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>CFBundleExecutable</key>
+  <string>run.sh</string>
+  <key>CFBundleIconFile</key>
+  <string>app.icns</string>
+  <key>CFBundleInfoDictionaryVersion</key>
+  <string>1.0</string>
+  <key>CFBundlePackageType</key>
+  <string>APPL</string>
+  <key>CFBundleSignature</key>
+  <string>????</string>
+  <key>CFBundleVersion</key>
+  <string>1.0</string>
+</dict>
+</plist>
+]
+  
+  File.open("#{app_name}.app/Contents/Info.plist", 'w') { |f| f.write(info_plist) }
+  
+  run_sh = %Q[#!/bin/bash
+
+# Add RVM to $PATH
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"
+
+# Add rbenv to $PATH
+export PATH="$HOME/.rbenv/bin:$HOME/.rbenv/shims:$PATH"
+
+# Change working path
+cd "$(dirname "$0")/../Resources/"
+
+# Start app
+ruby app.rb
+]
+  
+  File.open("#{app_name}.app/Contents/MacOS/run.sh", 'w') { |f| f.write(run_sh) }
+  
+  File.chmod(0777, "#{app_name}.app/Contents/MacOS/run.sh")
+  
+  # Copy all files to Resources
+  FileUtils.cp_r(Dir["#{app_name}/*"], "#{app_name}.app/Contents/Resources")
+  
+  # TODO: If there's no `app.icns`, add default R2D icon
+  
+  # Done!
+  puts "App written to `#{app_name}.app`"
+  
 when 'console'
+  
+  # TODO: Make it ready
+  puts "This isn't ready yet, sorry!"
+  exit
   
   require 'io/wait'
   require 'open3'
@@ -30,6 +148,4 @@ when 'console'
     end
     
   end
-else
-  puts "`r2d console` is the only available command"
 end

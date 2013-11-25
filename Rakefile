@@ -1,5 +1,11 @@
 require 'rake/testtask'
 
+class String
+  def colorize(c); "\e[#{c}m#{self}\e[0m" end
+  def error; colorize("1;31") end
+  def bold; colorize("1") end
+end
+
 Rake::TestTask.new do |t|
   t.test_files = FileList['test/*_test.rb']
   t.verbose = true
@@ -8,15 +14,13 @@ end
 desc "Build Gem"
 task :build do
   
-  `clear`
+  print "\nBuilding gem...\n\n".bold
+  puts `gem build r2d.gemspec --verbose`
+  print "\n...done!\n\n".bold
   
-  print "\nBuilding gem..."
-  `gem build r2d.gemspec`
-  print "done!\n"
-  
-  print "Installing gem..."
-  `gem install --local r2d-0.0.0.gem`
-  print "done!\n\n"
+  print "Installing gem...\n\n".bold
+  puts `gem install r2d-0.0.0.gem --local --verbose`
+  print "\n...done!\n\n".bold
   
 end
 

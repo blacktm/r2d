@@ -5,9 +5,11 @@ module R2D
     
     attr_reader :size
     
-    def initialize(x=0, y=0, s=100, c="white", visible=true)
+    def initialize(x=0, y=0, s=100, c="white")
+      @type_id = 2
       @x, @y, @color = x, y, c
       @width = @height = @size = s
+      @type_id = 2
       update_coords(x, y, s, s)
       update_color(c)
     end
