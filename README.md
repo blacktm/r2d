@@ -45,7 +45,10 @@ This gem uses `minitest`, but most tests are broken at the moment. Part of the c
 R2D requires Ruby 2.0 or greater. Native extensions are used in this gem, so a compiler is needed. The intent is for R2D to be a fully cross-platform graphics environment and should run on OS X, Windows, and Linux.
 
 So far, the gem has been tested on:
-- OS X 10.8.4 with SDL2 installed using [Homebrew](http://brew.sh)
+
+| OS        | Ruby       | Env         | SDL2             |
+| --------- | ---------- | ----------- | ---------------- |
+| OS X 10.9 | 2.0.0-p353 | rbenv 0.4.0 | 2.0.1 / Homebrew |
 
 <!-- - Windows 7 32-bit using the [RubyInstaller](http://rubyinstaller.org/) for Windows and the [MinGW DevKit](http://rubyinstaller.org/add-ons/devkit/) (required for building native extensions). -->
 
