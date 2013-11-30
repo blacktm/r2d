@@ -38,10 +38,15 @@ def check_libs
   end
 end
 
+def add_libs
+  check_libs
+  $LDFLAGS << "-lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf"
+end
+
+
 # Call with `-- --use-system-libs`
 if ARGV.include? "--use-system-libs"
-  check_libs
-  $LDFLAGS << " -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf"
+  add_libs
   
 elsif RUBY_PLATFORM =~ /darwin/
   
@@ -59,13 +64,13 @@ elsif RUBY_PLATFORM =~ /darwin/
   `brew install sdl2 sdl2_image sdl2_mixer sdl2_ttf`
   `brew upgrade sdl2 sdl2_image sdl2_mixer sdl2_ttf`
   
-  # Check if libs were installed
-  check_libs
-  
-  $LDFLAGS << " -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf"
+  add_libs
   
 elsif RUBY_PLATFORM =~ /mingw/
   # ...
+  
+else
+  add_libs
 end
 
 create_makefile('r2d/r2d')

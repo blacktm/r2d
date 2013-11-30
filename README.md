@@ -24,7 +24,7 @@ This gem requires [Homebrew](http://brew.sh) on OS X to install [SDL2](http://ww
 $ gem install r2d -- --use-system-libs
 ```
 
-The gem will search for SDL2 libs using `-lSDL2` style arguments. The [`extconf.rb`](/ext/r2d/extconf.rb) will check to make sure libs are available during the `gem install` process.
+This option will search for SDL2 libs using `-lSDL2` style arguments. The [`extconf.rb`](/ext/r2d/extconf.rb) will check to make sure libs are available during the `gem install` process.
 
 ## Installing on Windows and Linux
 
