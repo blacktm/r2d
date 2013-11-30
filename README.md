@@ -2,29 +2,33 @@
 
 R2D is a gem for drawing 2D graphics, animations, playing audio, capturing input, and more. It aims to be a simple and lightweight programmable graphics engine suitable for casual 2D games, visualizations, education, and more.
 
-**WARNING: This gem is still under development!** This means the API and implementation are very much in flux. Review the latest API [documentation](http://www.ruby2d.com/docs) and the [change log](http://www.ruby2d.com/docs/history.html) for more info.
+**WARNING: This gem is still in development!** This means the API and implementation are very much in flux. Review the latest API [documentation](http://www.ruby2d.com/docs) and the [change log](http://www.ruby2d.com/docs/history.html) for more info.
 
-To share ideas, ask questions, or discuss anything in general, check out the [Google group](https://groups.google.com/d/forum/r2d-gem). Tweet me (the author) at [@blacktm](https://twitter.com/blacktm). [View the R2D website](http://www.ruby2d.com) for news and updates (*this site is also still under development*).
+[View the R2D website](http://www.ruby2d.com) for news and updates (*this site is also still in development*). To share ideas, ask questions, or discuss anything in general, check out the [Google group](https://groups.google.com/d/forum/r2d-gem). Tweet me (the author) at [@blacktm](https://twitter.com/blacktm).
 
 # Installing
 
-This gem uses [SDL2](http://www.libsdl.org) and currently requires libs to be accessible via your `$PATH`, i.e. can compile using `-lSDL2` style arguments. The [`extconf.rb`](/ext/r2d/extconf.rb) will check to make sure libs are available during the `gem install` process. If you're on OS X, you can install the following SDL2 libs using [Homebrew](http://brew.sh):
-
-```
-$ brew install sdl2 sdl2_image sdl2_mixer sdl2_ttf
-```
-
-If you have an idea for how to conveniently install SDL2 on Windows, [let me know](https://twitter.com/blacktm)! We're also exploring the bundling of SDL2 libs with R2D in future releases so all this nonsense won't be necessary.
-
-## Installing Locally
-
-Until a v0.1.0 release, this gem will only be available locally. To build and install, use:
+Until a v0.1.0 public release, this gem will only be available locally. To build and install, use:
 
 ```
 $ rake build
 ```
 
-This Rake task will conveniently build and install the gem locally and verbosely.
+This Rake task will build and install the gem locally and verbosely.
+
+## Installing on OS X
+
+This gem requires [Homebrew](http://brew.sh) on OS X to install [SDL2](http://www.libsdl.org). If you prefer not to install Homebrew and already have SDL2 available on your `$PATH`, use the `--use-system-libs` option:
+
+```
+$ gem install r2d -- --use-system-libs
+```
+
+The gem will search for SDL2 libs using `-lSDL2` style arguments. The [`extconf.rb`](/ext/r2d/extconf.rb) will check to make sure libs are available during the `gem install` process.
+
+## Installing on Windows and Linux
+
+This gem cannot (yet) be installed on Windows and Linux with ease, but we're working on it! If you have an idea for how to conveniently install SDL2 on Windows, [let me know](https://twitter.com/blacktm)!
 
 # Running the Examples
 
