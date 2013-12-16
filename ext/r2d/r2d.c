@@ -12,8 +12,20 @@
 
 #define FPS_CAP  60
 
-static VALUE r2d_module = Qundef;
-static VALUE r2d_window_klass = Qundef;
+static VALUE r2d_module;
+static VALUE r2d_window_klass;
+static VALUE c_data_klass;
+
+struct img_data {
+  SDL_Surface *surface;
+  SDL_Texture *texture;
+};
+
+struct text_data {
+  TTF_Font *font;
+  SDL_Surface *surface;
+  SDL_Texture *texture;
+};
 
 
 /*
@@ -77,17 +89,52 @@ static void draw_triangle(double x1,  double y1,
 
 
 /*
+ * Free the img data
+ */
+static void img_free(struct img_data *data) {
+  SDL_DestroyTexture(data->texture);
+  SDL_FreeSurface(data->surface);
+}
+
+
+/*
+ * Free the text data
+ */
+static void text_free(struct text_data *data) {
+  TTF_CloseFont(data->font);
+  SDL_DestroyTexture(data->texture);
+  SDL_FreeSurface(data->surface);
+}
+
+
+/*
+ * Init the image data
+ */
+static VALUE init_image(SDL_Renderer *renderer, char *path) {
+  struct img_data *data = ALLOC(struct img_data);
+  
+  data->surface = IMG_Load(path);
+  data->texture = SDL_CreateTextureFromSurface(renderer, data->surface);
+  
+  return Data_Wrap_Struct(c_data_klass, NULL, img_free, data);
+}
+
+
+/*
  * Draw an image in OpenGL
  */
-static void draw_image(SDL_Renderer *renderer, char *path, int x, int y) {
+static void draw_image(VALUE el, int x, int y) {
   
-  SDL_Surface *surface = IMG_Load(path);
-  SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surface);
+  struct img_data *data;
+  Data_Get_Struct(rb_iv_get(el, "@data"), struct img_data, data);
   
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   
-  SDL_GL_BindTexture(texture, NULL, NULL);
+  SDL_GL_BindTexture(data->texture, NULL, NULL);
+  
+  int w = data->surface->w;
+  int h = data->surface->h;
   
   glBegin(GL_QUADS);
     
@@ -96,45 +143,54 @@ static void draw_image(SDL_Renderer *renderer, char *path, int x, int y) {
     glTexCoord2f(0, 0);
     glVertex2f(x, y);
     
-    glTexCoord2f(surface->w, 0);
-    glVertex2f(x + surface->w, y);
+    glTexCoord2f(w, 0);
+    glVertex2f(x + w, y);
     
-    glTexCoord2f(surface->w, surface->h);
-    glVertex2f(x + surface->w, y + surface->h);
+    glTexCoord2f(w, h);
+    glVertex2f(x + w, y + h);
     
-    glTexCoord2f(0, surface->h);
-    glVertex2f(x, y + surface->h);
+    glTexCoord2f(0, h);
+    glVertex2f(x, y + h);
     
   glEnd();
   
-  SDL_GL_UnbindTexture(texture);
+  SDL_GL_UnbindTexture(data->texture);
+}
+
+
+/*
+ * Init the text data
+ */
+static VALUE init_text(SDL_Renderer *renderer,
+                       char *path, char *text, int size) {
   
-  SDL_DestroyTexture(texture);
-  SDL_FreeSurface(surface);
+  struct text_data *data = ALLOC(struct text_data);
+  
+  SDL_Color color = { 255, 255, 255 };
+  
+  data->font = TTF_OpenFont(path, size);
+  data->surface = TTF_RenderText_Blended(data->font, text, color);
+  data->texture = SDL_CreateTextureFromSurface(renderer, data->surface);
+  
+  return Data_Wrap_Struct(c_data_klass, NULL, text_free, data);
 }
 
 
 /*
  * Draw text with SDL2_ttf in OpenGL
  */
-static void draw_text(SDL_Renderer *renderer,
-                      char *text, char *font_path,
-                      int x, int y, int size) {
+static void draw_text(VALUE el, char *text, int x, int y) {
   
-  TTF_Font *font = TTF_OpenFont(font_path, size);
-  
-  SDL_Color color = { 255, 255, 255 };
+  struct text_data *data;
+  Data_Get_Struct(rb_iv_get(el, "@data"), struct text_data, data);
   
   int w, h;
-  TTF_SizeText(font, text, &w, &h);
-  
-  SDL_Surface *surface = TTF_RenderText_Blended(font, text, color);
-  SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surface);
+  TTF_SizeText(data->font, text, &w, &h);
   
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   
-  SDL_GL_BindTexture(texture, NULL, NULL);
+  SDL_GL_BindTexture(data->texture, NULL, NULL);
   
   glBegin(GL_QUADS);
     glColor4f(1, 1, 1, 1);
@@ -144,11 +200,7 @@ static void draw_text(SDL_Renderer *renderer,
     glTexCoord2f(0, h); glVertex2f(x, y + h);
   glEnd();
   
-  SDL_GL_UnbindTexture(texture);
-  
-  TTF_CloseFont(font);
-  SDL_DestroyTexture(texture);
-  SDL_FreeSurface(surface);
+  SDL_GL_UnbindTexture(data->texture);
 }
 
 
@@ -163,7 +215,7 @@ static VALUE r2d_show(VALUE self) {
   char* win_title = RSTRING_PTR(rb_iv_get(self, "@title"));
   
   // SDL Inits /////////////////////////////////////////////////////////////////
-  // May need to init other stuff: http://wiki.libsdl.org/SDL_Init
+  // May need more inits: http://wiki.libsdl.org/SDL_Init
   
   SDL_Init(SDL_INIT_VIDEO);
   TTF_Init();
@@ -194,14 +246,14 @@ static VALUE r2d_show(VALUE self) {
     window, -1, SDL_RENDERER_ACCELERATED
   );
   
-  // Set some variables
+  // Setting variables
   int cursor_x, cursor_y;
   Uint32 frames = 0;
   Uint32 start_ms = SDL_GetTicks();
   Uint32 current_ms = start_ms;
   Uint32 elapsed_ms;
   Uint32 last_ms;
-  int duration_ms;
+  Uint32 duration_ms;
   int delay_ms;
   double fps;
   
@@ -245,14 +297,7 @@ static VALUE r2d_show(VALUE self) {
     
     if (delay_ms < 0) { delay_ms = 0; }
     
-    // if (frames % 50 == 0) {
-    //   printf("elapsed_ms:  %i\n", elapsed_ms);
-    //   printf("frames:      %i\n", frames);
-    //   printf("fps:         %f\n", fps);
-    //   printf("duration_ms: %i\n", duration_ms);
-    //   printf("delay_ms:    %i\n", delay_ms);
-    //   printf("totes_ms:    %i\n\n", duration_ms + delay_ms);
-    // }
+    // Total ms == duration_ms + delay_ms
     
     SDL_Delay(delay_ms);
     last_ms = SDL_GetTicks();
@@ -364,9 +409,16 @@ static VALUE r2d_show(VALUE self) {
         break;
         
         case IMAGE: {
+          if (rb_iv_get(el, "@data") == Qnil) {
+            VALUE data = init_image(
+              renderer,
+              RSTRING_PTR(rb_iv_get(el, "@path"))
+            );
+            rb_iv_set(el, "@data", data);
+          }
+          
           draw_image(
-            renderer,
-            RSTRING_PTR(rb_iv_get(el, "@path")),
+            el,
             NUM2DBL(rb_iv_get(el, "@x")),
             NUM2DBL(rb_iv_get(el, "@y"))
           );
@@ -374,18 +426,27 @@ static VALUE r2d_show(VALUE self) {
         break;
         
         case TEXT: {
-          VALUE c = rb_iv_get(el, "@c");
-          NUM2DBL(rb_iv_get(c1, "@r")),
-          NUM2DBL(rb_iv_get(c1, "@g")),
-          NUM2DBL(rb_iv_get(c1, "@b")),
+          if (rb_iv_get(el, "@data") == Qnil) {
+            VALUE data = init_text(
+              renderer,
+              RSTRING_PTR(rb_iv_get(el, "@font")),
+              RSTRING_PTR(rb_iv_get(el, "@text")),
+              NUM2DBL(rb_iv_get(el, "@size"))
+            );
+            rb_iv_set(el, "@data", data);
+          }
+          
+          // TODO: Set color of text
+          // VALUE c = rb_iv_get(el, "@c");
+          // NUM2DBL(rb_iv_get(c, "@r")),
+          // NUM2DBL(rb_iv_get(c, "@g")),
+          // NUM2DBL(rb_iv_get(c, "@b")),
           
           draw_text(
-            renderer,
+            el,
             RSTRING_PTR(rb_iv_get(el, "@text")),
-            RSTRING_PTR(rb_iv_get(el, "@font")),
             NUM2DBL(rb_iv_get(el, "@x")),
-            NUM2DBL(rb_iv_get(el, "@y")),
-            NUM2DBL(rb_iv_get(el, "@size"))
+            NUM2DBL(rb_iv_get(el, "@y"))
           );
         }
         break;
@@ -419,5 +480,7 @@ void Init_r2d() {
   
   // R2D::Window#show
   rb_define_method(r2d_window_klass, "show", r2d_show, 0);
-
+  
+  // R2D::CData
+  c_data_klass = rb_define_class_under(r2d_module, "CData", rb_cObject);
 }
