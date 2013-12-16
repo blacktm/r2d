@@ -10,8 +10,6 @@
 #define IMAGE    3
 #define TEXT     4
 
-#define FPS_CAP  60
-
 static VALUE r2d_module;
 static VALUE r2d_window_klass;
 static VALUE c_data_klass;
@@ -213,6 +211,7 @@ static VALUE r2d_show(VALUE self) {
   int win_width = NUM2INT(rb_iv_get(self, "@width"));
   int win_height = NUM2INT(rb_iv_get(self, "@height"));
   char* win_title = RSTRING_PTR(rb_iv_get(self, "@title"));
+  int fps_cap = NUM2INT(rb_iv_get(self, "@fps_cap"));
   
   // SDL Inits /////////////////////////////////////////////////////////////////
   // May need more inits: http://wiki.libsdl.org/SDL_Init
@@ -246,21 +245,45 @@ static VALUE r2d_show(VALUE self) {
     window, -1, SDL_RENDERER_ACCELERATED
   );
   
-  // Setting variables
-  int cursor_x, cursor_y;
-  Uint32 frames = 0;
-  Uint32 start_ms = SDL_GetTicks();
-  Uint32 current_ms = start_ms;
-  Uint32 elapsed_ms;
-  Uint32 last_ms;
-  Uint32 duration_ms;
-  int delay_ms;
-  double fps;
+  // Setting up variables
+  int cursor_x, cursor_y;  // Cursor positions
+  Uint32 frames = 0;       // Total frames since start
+  Uint32 start_ms = SDL_GetTicks();  // Elapsed time since start
+  Uint32 begin_ms = start_ms;  // TIme at beginning of loop
+  Uint32 end_ms;    // Time at end of loop
+  Uint32 total_ms;  // Total elapsed time
+  Uint32 loop_ms;   // Elapsed time of loop
+  int delay_ms;     // Amount of delay to achieve desired frame rate
+  double fps;       // The actual frame rate
   
   // Main Event Loop ///////////////////////////////////////////////////////////
   
   bool quit = false;
   while (!quit) {
+    
+    // Set FPS /////////////////////////////////////////////////////////////////
+    
+    frames++;
+    end_ms = SDL_GetTicks();
+    
+    total_ms = end_ms - start_ms;
+    fps = frames / (total_ms / 1000.0);
+    
+    loop_ms = end_ms - begin_ms;
+    delay_ms = (1000 / fps_cap) - loop_ms;
+    
+    if (delay_ms < 0) { delay_ms = 0; }
+    
+    // loop_ms + delay_ms => should equal => (1000 / fps_cap)
+    
+    // Store FPS info
+    rb_iv_set(self, "@frames", INT2NUM(frames));
+    rb_iv_set(self, "@total_ms", INT2NUM(total_ms));
+    rb_iv_set(self, "@loop_ms", INT2NUM(loop_ms));
+    rb_iv_set(self, "@fps", DBL2NUM(fps));
+    
+    SDL_Delay(delay_ms);
+    begin_ms = SDL_GetTicks();
     
     // Input Handling //////////////////////////////////////////////////////////
     
@@ -283,24 +306,6 @@ static VALUE r2d_show(VALUE self) {
     SDL_GetMouseState(&cursor_x, &cursor_y);
     rb_iv_set(self, "@cursor_x", INT2NUM(cursor_x));
     rb_iv_set(self, "@cursor_y", INT2NUM(cursor_y));
-    
-    // Set FPS /////////////////////////////////////////////////////////////////
-    
-    frames++;
-    current_ms = SDL_GetTicks();
-    
-    elapsed_ms = current_ms - start_ms;
-    fps = frames / (elapsed_ms / 1000.0);
-    
-    duration_ms = current_ms - last_ms;
-    delay_ms = (1000 / FPS_CAP) - duration_ms;
-    
-    if (delay_ms < 0) { delay_ms = 0; }
-    
-    // Total ms == duration_ms + delay_ms
-    
-    SDL_Delay(delay_ms);
-    last_ms = SDL_GetTicks();
     
     // Update Application State ////////////////////////////////////////////////
     

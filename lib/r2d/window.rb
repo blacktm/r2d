@@ -2,11 +2,13 @@
 
 module R2D
   class Window
-    attr_reader :width, :height, :title, :cursor_x, :cursor_y
+    attr_reader :width, :height, :title, :cursor_x, :cursor_y,
+                :frames, :total_ms, :loop_ms, :fps
     
-    def initialize(width: 640, height: 480, title: "R2D")
+    def initialize(width: 640, height: 480, title: "R2D", fps: 60)
       @width, @height, @title = width, height, title
       @cursor_x = @cursor_y = 0
+      @fps_cap = fps
       
       @objects = []
       @on_keys = {}
