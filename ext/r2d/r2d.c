@@ -1,9 +1,9 @@
 #include <ruby.h>
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_ttf.h>
+#include <SDL2/SDL_opengl.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_mixer.h>
-#include <SDL2/SDL_opengl.h>
+#include <SDL2/SDL_ttf.h>
 
 #define TRIANGLE 1
 #define QUAD     2
@@ -77,9 +77,9 @@ static void draw_triangle(double x1,  double y1,
 
 
 /*
- * TODO: Draw an image in OpenGL
+ * Draw an image in OpenGL
  */
-static void draw_image(SDL_Renderer *renderer, int x, int y, char *path) {
+static void draw_image(SDL_Renderer *renderer, char *path, int x, int y) {
   
   SDL_Surface *surface = IMG_Load(path);
   SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surface);
@@ -115,13 +115,13 @@ static void draw_image(SDL_Renderer *renderer, int x, int y, char *path) {
 
 
 /*
- * TODO: Draw text with SDL2_ttf in OpenGL
+ * Draw text with SDL2_ttf in OpenGL
  */
 static void draw_text(SDL_Renderer *renderer,
-                             int x, int y, int size, char *text) {
+                      char *text, char *font_path,
+                      int x, int y, int size) {
   
-  char font_file[] = "tmp/myriadpro-regular-webfont.ttf";
-  TTF_Font *font = TTF_OpenFont(font_file, size);
+  TTF_Font *font = TTF_OpenFont(font_path, size);
   
   SDL_Color color = { 255, 255, 255 };
   
@@ -366,20 +366,26 @@ static VALUE r2d_show(VALUE self) {
         case IMAGE: {
           draw_image(
             renderer,
+            RSTRING_PTR(rb_iv_get(el, "@path")),
             NUM2DBL(rb_iv_get(el, "@x")),
-            NUM2DBL(rb_iv_get(el, "@y")),
-            RSTRING_PTR(rb_iv_get(el, "@path"))
+            NUM2DBL(rb_iv_get(el, "@y"))
           );
         }
         break;
         
         case TEXT: {
+          VALUE c = rb_iv_get(el, "@c");
+          NUM2DBL(rb_iv_get(c1, "@r")),
+          NUM2DBL(rb_iv_get(c1, "@g")),
+          NUM2DBL(rb_iv_get(c1, "@b")),
+          
           draw_text(
             renderer,
+            RSTRING_PTR(rb_iv_get(el, "@text")),
+            RSTRING_PTR(rb_iv_get(el, "@font")),
             NUM2DBL(rb_iv_get(el, "@x")),
             NUM2DBL(rb_iv_get(el, "@y")),
-            NUM2DBL(rb_iv_get(el, "@size")),
-            RSTRING_PTR(rb_iv_get(el, "@text"))
+            NUM2DBL(rb_iv_get(el, "@size"))
           );
         }
         break;
