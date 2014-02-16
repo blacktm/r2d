@@ -25,6 +25,10 @@ struct text_data {
   SDL_Texture *texture;
 };
 
+struct sound_data {
+  Mix_Chunk *wave;
+};
+
 
 /*
  * Init window for OpenGL
@@ -40,7 +44,7 @@ bool initGL(width, height) {
   glLoadIdentity();
   
   // Initialize the modelview matrix
-  glMatrixMode( GL_MODELVIEW );
+  glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
   
   // Enable transparency
@@ -89,17 +93,7 @@ static void draw_triangle(double x1,  double y1,
 /*
  * Free the img data
  */
-static void img_free(struct img_data *data) {
-  SDL_DestroyTexture(data->texture);
-  SDL_FreeSurface(data->surface);
-}
-
-
-/*
- * Free the text data
- */
-static void text_free(struct text_data *data) {
-  TTF_CloseFont(data->font);
+static void free_img(struct img_data *data) {
   SDL_DestroyTexture(data->texture);
   SDL_FreeSurface(data->surface);
 }
@@ -114,7 +108,7 @@ static VALUE init_image(SDL_Renderer *renderer, char *path) {
   data->surface = IMG_Load(path);
   data->texture = SDL_CreateTextureFromSurface(renderer, data->surface);
   
-  return Data_Wrap_Struct(c_data_klass, NULL, img_free, data);
+  return Data_Wrap_Struct(c_data_klass, NULL, free_img, data);
 }
 
 
@@ -157,20 +151,30 @@ static void draw_image(VALUE el, int x, int y) {
 
 
 /*
+ * Free the text data
+ */
+static void free_text(struct text_data *data) {
+  TTF_CloseFont(data->font);
+  SDL_DestroyTexture(data->texture);
+  SDL_FreeSurface(data->surface);
+}
+
+
+/*
  * Init the text data
  */
 static VALUE init_text(SDL_Renderer *renderer,
-                       char *path, char *text, int size) {
+                       char *font, char *text, int size) {
   
   struct text_data *data = ALLOC(struct text_data);
   
   SDL_Color color = { 255, 255, 255 };
   
-  data->font = TTF_OpenFont(path, size);
+  data->font = TTF_OpenFont(font, size);
   data->surface = TTF_RenderText_Blended(data->font, text, color);
   data->texture = SDL_CreateTextureFromSurface(renderer, data->surface);
   
-  return Data_Wrap_Struct(c_data_klass, NULL, text_free, data);
+  return Data_Wrap_Struct(c_data_klass, NULL, free_text, data);
 }
 
 
@@ -203,23 +207,66 @@ static void draw_text(VALUE el, char *text, int x, int y) {
 
 
 /*
+ * Free the sound data
+ */
+static void free_sound(struct sound_data *data) {
+  Mix_FreeChunk(data->wave);
+}
+
+
+/*
+ * Init the sound data
+ */
+static VALUE init_sound(char *path) {
+  struct sound_data *data = ALLOC(struct sound_data);
+  
+  data->wave = Mix_LoadWAV(path);
+  if (!data->wave) {
+    printf("R2D Audio Error: %s\n", Mix_GetError());
+  }
+  
+  return Data_Wrap_Struct(c_data_klass, NULL, free_sound, data);
+}
+
+
+/*
+ * R2D::Window#create_audio
+ */
+static VALUE r2d_create_audio(VALUE self, VALUE sound, VALUE path) {
+  VALUE data = init_sound(RSTRING_PTR(path));
+  rb_iv_set(sound, "@data", data);
+  return 0;
+}
+
+
+/*
+ * R2D::Window#play_audio
+ */
+static VALUE r2d_play_audio(VALUE self, VALUE sound) {
+  struct sound_data *data;
+  Data_Get_Struct(rb_iv_get(sound, "@data"), struct sound_data, data);
+  Mix_PlayChannel(-1, data->wave, 0);
+  return 0;
+}
+
+
+/*
  * R2D::Window#show
  */
 static VALUE r2d_show(VALUE self) {
   
-  // Get the window width and height from the Ruby window instance
-  int win_width = NUM2INT(rb_iv_get(self, "@width"));
-  int win_height = NUM2INT(rb_iv_get(self, "@height"));
-  char* win_title = RSTRING_PTR(rb_iv_get(self, "@title"));
-  int fps_cap = NUM2INT(rb_iv_get(self, "@fps_cap"));
-  
   // SDL Inits /////////////////////////////////////////////////////////////////
-  // May need more inits: http://wiki.libsdl.org/SDL_Init
   
-  SDL_Init(SDL_INIT_VIDEO);
+  SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
   TTF_Init();
   
-  // Creating SDL window ///////////////////////////////////////////////////////
+  // Create SDL window and configure ///////////////////////////////////////////
+  
+  char* win_title = RSTRING_PTR(rb_iv_get(self, "@title"));
+  int win_width   = NUM2INT(rb_iv_get(self, "@width"));
+  int win_height  = NUM2INT(rb_iv_get(self, "@height"));
+  int fps_cap     = NUM2INT(rb_iv_get(self, "@fps_cap"));
+  bool vsync      = RTEST(rb_iv_get(self, "@vsync"));
   
   SDL_Window *window = SDL_CreateWindow(
     win_title,                                       // title
@@ -229,11 +276,18 @@ static VALUE r2d_show(VALUE self) {
   );
   
   // Check if windows was successfully created
-  if (window == NULL) {
-    printf("Could not create window: %s\n", SDL_GetError());
+  if (!window) {
+    printf("R2D Error: Could not create window: %s\n", SDL_GetError());
     return 1;
   }
-    
+  
+  // Enable VSync
+  if (vsync) {
+    if (!SDL_SetHint(SDL_HINT_RENDER_VSYNC, "1")) {
+      printf("R2D Warning: VSync cannot be enabled!");
+    }
+  }
+  
   // OpenGL Inits //////////////////////////////////////////////////////////////
   
   SDL_GLContext glcontext = SDL_GL_CreateContext(window);
@@ -247,6 +301,7 @@ static VALUE r2d_show(VALUE self) {
   
   // Setting up variables
   int cursor_x, cursor_y;  // Cursor positions
+  const Uint8 *key_state;
   Uint32 frames = 0;       // Total frames since start
   Uint32 start_ms = SDL_GetTicks();  // Elapsed time since start
   Uint32 begin_ms = start_ms;  // TIme at beginning of loop
@@ -274,7 +329,7 @@ static VALUE r2d_show(VALUE self) {
     
     if (delay_ms < 0) { delay_ms = 0; }
     
-    // loop_ms + delay_ms => should equal => (1000 / fps_cap)
+    // loop_ms + delay_ms => should equal (1000 / fps_cap)
     
     // Store FPS info
     rb_iv_set(self, "@frames", INT2NUM(frames));
@@ -285,21 +340,31 @@ static VALUE r2d_show(VALUE self) {
     SDL_Delay(delay_ms);
     begin_ms = SDL_GetTicks();
     
-    // Input Handling //////////////////////////////////////////////////////////
+    // Handle Input ////////////////////////////////////////////////////////////
     
     SDL_Event e;
     while (SDL_PollEvent(&e)) {
-      
       switch(e.type) {
         case SDL_KEYDOWN:
-          rb_funcall(self, rb_intern("key_callback"), 1,
-            rb_str_new2(SDL_GetScancodeName(e.key.keysym.scancode)));
+          rb_funcall(self, rb_intern("on_key_callback"), 1,
+            rb_str_new2(SDL_GetScancodeName(e.key.keysym.scancode))
+          );
           break;
         case SDL_QUIT:
           quit = true;
           break;
       }
-      
+    }
+    
+    int num_keys;
+    key_state = SDL_GetKeyboardState(&num_keys);
+    
+    for (int i = 0; i < num_keys; i++) {
+      if (key_state[i] == 1) {
+        rb_funcall(self, rb_intern("keys_down_callback"), 1,
+          rb_str_new2(SDL_GetScancodeName(i))
+        );
+      }
     }
     
     // Store the cursor position
@@ -441,7 +506,7 @@ static VALUE r2d_show(VALUE self) {
             rb_iv_set(el, "@data", data);
           }
           
-          // TODO: Set color of text
+          // // TODO: Set color of text
           // VALUE c = rb_iv_get(el, "@c");
           // NUM2DBL(rb_iv_get(c, "@r")),
           // NUM2DBL(rb_iv_get(c, "@g")),
@@ -463,6 +528,8 @@ static VALUE r2d_show(VALUE self) {
   }
   
   // Clean up
+  IMG_Quit();
+  Mix_Quit();
   SDL_GL_DeleteContext(glcontext);
   SDL_DestroyRenderer(renderer);
   SDL_DestroyWindow(window);
@@ -477,6 +544,11 @@ static VALUE r2d_show(VALUE self) {
  */
 void Init_r2d() {
   
+  // Open audio device
+  if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 4096)) {
+    puts("Mix_OpenAudio failed.");
+  }
+  
   // R2D
   r2d_module = rb_define_module("R2D");
   
@@ -485,6 +557,12 @@ void Init_r2d() {
   
   // R2D::Window#show
   rb_define_method(r2d_window_klass, "show", r2d_show, 0);
+  
+  // R2D::Window#create_audio
+  rb_define_method(r2d_window_klass, "create_audio", r2d_create_audio, 2);
+  
+  // R2D::Window#play_audio
+  rb_define_method(r2d_window_klass, "play_audio", r2d_play_audio, 1);
   
   // R2D::CData
   c_data_klass = rb_define_class_under(r2d_module, "CData", rb_cObject);

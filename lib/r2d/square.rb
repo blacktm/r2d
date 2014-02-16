@@ -9,7 +9,6 @@ module R2D
       @type_id = 2
       @x, @y, @color = x, y, c
       @width = @height = @size = s
-      @type_id = 2
       update_coords(x, y, s, s)
       update_color(c)
     end

@@ -3,36 +3,16 @@
 module R2D
   class Sound
     
-    def initialize(path)
-      @sound = nil
+    def initialize(window, path)
+      unless File.exists? path
+        raise Error, "Cannot find sound file!"
+      end
+      window.create_audio(self, path)
+      @window, @path = window, path
     end
     
     def play
-      @sound.play
-    end
-    
-    def play_loop
-      @sound.play(true)
-    end
-    
-    def pause
-      @sound.pause
-    end
-    
-    def playing?
-      @sound.playing?
-    end
-    
-    def paused?
-      @sound.paused?
-    end
-    
-    def stop
-      @sound.stop
-    end
-    
-    def volume
-      @sound.volume
+      @window.play_audio(self)
     end
     
   end

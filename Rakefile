@@ -13,15 +13,14 @@ end
 
 desc "Build Gem"
 task :build do
-  
   print "\nBuilding gem...\n\n".bold
   puts `gem build r2d.gemspec --verbose`
   print "\n...done!\n\n".bold
   
   print "Installing gem...\n\n".bold
-  puts `gem install r2d-0.0.0.gem --local --verbose`
+  puts `gem uninstall r2d --executables`
+  puts `gem install r2d-0.0.0.gem --local`
   print "\n...done!\n\n".bold
-  
 end
 
 desc "Test and Build"

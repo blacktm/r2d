@@ -39,7 +39,7 @@ def check_libs
 end
 
 def add_libs
-  check_libs
+  unless ARGV.include? "--quick" then check_libs end
   $LDFLAGS << "-lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf"
 end
 
@@ -49,7 +49,6 @@ if ARGV.include? "--use-system-libs"
   add_libs
   
 elsif RUBY_PLATFORM =~ /darwin/
-  
   # Check for Homebrew
   if `which brew`.empty?
     errors = ["Could not find Homebrew.".error,
@@ -68,7 +67,6 @@ elsif RUBY_PLATFORM =~ /darwin/
   
 elsif RUBY_PLATFORM =~ /mingw/
   # ...
-  
 else
   add_libs
 end

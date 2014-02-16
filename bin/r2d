@@ -49,13 +49,13 @@ when 'package'
   
   # Check if `app.rb` is in the app dir
   unless File.exists? "#{app_name}/app.rb"
-    puts "`app.rb` not found in directory #{app_name}".error
+    puts "`app.rb` not found in directory `#{app_name}`.".error
     exit
   end
   
   # Warning if `app.icns` not found in app dir
   unless File.exists? "#{app_name}/app.icns"
-    puts "#{"Warning:".error} `app.icns` not found."
+    puts "#{"Warning:".error} No icon provided (`app.icns` not found)."
   end
   
   # Check if app already exists
@@ -115,7 +115,7 @@ ruby app.rb
   # TODO: If there's no `app.icns`, add default R2D icon
   
   # Done!
-  puts "App written to `#{app_name}.app`"
+  puts "App written to `#{app_name}.app`."
   
 when 'console'
   

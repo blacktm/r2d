@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.author      = 'Tom Black'
   s.email       = '@blacktm'
   s.summary     = 'R2D'
-  s.description = 'A Ruby 2D graphics interface.'
+  s.description = 'A gem for 2D graphics in Ruby.'
   s.homepage    = 'https://github.com/blacktm/r2d'
   s.license     = 'MIT'
   s.files       = Dir.glob('lib/**/*') +

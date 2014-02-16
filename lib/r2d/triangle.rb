@@ -15,21 +15,12 @@ module R2D
       @x3, @y3 = x3, y3
       @color = c
       update_color(c)
-      # if visible then add end
     end
     
     def color=(c)
       update_color(c)
       @color = c
     end
-    
-    # def add
-    #   R2D::Window.add(self)
-    # end
-    
-    # def remove
-    #   R2D::Window.remove(self)
-    # end
     
     private
     

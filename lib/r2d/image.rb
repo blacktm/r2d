@@ -7,7 +7,7 @@ module R2D
     
     def initialize(x, y, path)
       unless File.exists? path
-        raise Error, "Cannot find image!"
+        raise Error, "Cannot find image file!"
       end
       
       @type_id = 3

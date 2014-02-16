@@ -6,28 +6,37 @@ module R2D
     attr_accessor :x, :y, :size, :text
     
     def initialize(x=0, y=0, size=20, text="Hello World!", font="Arial", c="white")
-      unless File.exists? font
-        raise Error, "Cannot find font file!"
+      if font.include? '.'
+        unless File.exists? font
+          raise Error, "Cannot find font file!"
+        else
+          @font = font
+        end
+      else
+        @font = resolve_path(font)
       end
       
       @type_id = 4
       @x, @y, @size = x, y, size
-      @text, @font, @color = text, font, c
+      @text, @color = text, c
       update_color(c)
-      
-      if RUBY_PLATFORM =~ /darwin/
-        # TODO:
-        #   1. Set font search paths
-        #        /Library/Fonts
-        #   2. If has file extention, use as path
-        #      Else, search font paths:
-        #        "#{font_paths}/#{font}.ttf"
-      end
     end
     
     def color=(c)
       @color = c
       update_color(c)
+    end
+    
+    private
+    
+    def resolve_path(font)
+      if RUBY_PLATFORM =~ /darwin/
+        font_path = "/Library/Fonts/#{font}.ttf"
+        unless File.exists? font_path
+          raise Error, "Cannot find system font!"
+        end
+      end
+      font_path
     end
     
     def update_color(c)
