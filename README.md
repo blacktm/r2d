@@ -1,5 +1,7 @@
 # R2D: 2D Graphics for Ruby
 
+**This project has been deprecated!** Check out its successor, [Ruby 2D](https://github.com/ruby2d/ruby2d).
+
 R2D is a gem for drawing 2D graphics, animations, playing audio, capturing input, and more. It aims to be a simple and lightweight programmable graphics engine suitable for casual 2D games, visualizations, education, and more.
 
 **WARNING: This gem is still in development!** This means the API and implementation are very much in flux. Review the latest API [documentation](http://www.ruby2d.com/docs) and the [change log](http://www.ruby2d.com/docs/history.html) for more info.
